@@ -1,0 +1,10 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:YJMPD_UWP.Themes">
+
+    <Style TargetType="RelativePanel" x:Key="DarkModeFix">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+</ResourceDictionary>

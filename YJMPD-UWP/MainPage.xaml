@@ -7,7 +7,150 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style x:Key="NavStackPanel" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="275" />
+        </Style>
 
+        <Style x:Key="NavIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+
+        <Style x:Key="NavText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="Margin" Value="18,0,0,0" />
+        </Style>
+
+
+        <Style x:Key="GPSInfoPanel" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="10,0,10,0" />
+        </Style>
+
+        <Style x:Key="GPSInfoIcon" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="5,5,0,0" />
+        </Style>
+
+        <Style x:Key="GPSInfoText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="15,0,0,0" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <RelativePanel Grid.Row="0">
+            <Button RelativePanel.AlignLeftWithPanel="True" Name="NavButton" Click="NavButton_Click" VerticalAlignment="Stretch" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" FontSize="28" />
+
+            <Viewbox RelativePanel.RightOf="NavButton" RelativePanel.AlignBottomWith="NavButton" StretchDirection="DownOnly" Stretch="UniformToFill" Margin="10,0,10,0">
+                <TextBlock FontSize="28" Name="PageTitle" Text="{Binding Map}" />
+            </Viewbox>
+        </RelativePanel>
+
+        <SplitView Grid.Row="1" Name="NavView" DisplayMode="Overlay" OpenPaneLength="275">
+            <SplitView.Pane>
+                <RelativePanel VerticalAlignment="Stretch"
+                      ManipulationMode="TranslateX"
+                      ManipulationCompleted="Pane_ManipulationCompleted" Style="{ThemeResource DarkModeFix}">
+
+                    <Viewbox Stretch="Uniform" StretchDirection="DownOnly" HorizontalAlignment="Stretch" RelativePanel.AlignTopWithPanel="True">
+                        <ListBox SelectionMode="Single" Name="NavList" SelectionChanged="NavList_SelectionChanged" Tapped="NavList_Tapped">
+                            <ListBoxItem Name="NavListMap" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
+                                <StackPanel Style="{StaticResource NavStackPanel}">
+                                    <TextBlock Style="{StaticResource NavIcon}" Text="&#xE909;"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="{Binding Map}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem Name="NavListRoute" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
+                                <StackPanel Style="{StaticResource NavStackPanel}">
+                                    <TextBlock Style="{StaticResource NavIcon}" Text="&#xE7AD;"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="{Binding Route}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem Name="NavListLandmarks" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
+                                <StackPanel Style="{StaticResource NavStackPanel}">
+                                    <TextBlock Style="{StaticResource NavIcon}" Text="&#xE913;"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="{Binding Landmarks}" />
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem Name="NavListHelp" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
+                                <StackPanel Style="{StaticResource NavStackPanel}">
+                                    <TextBlock Style="{StaticResource NavIcon}" Text="&#xE897;"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="{Binding Help}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem Name="NavListSearch" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
+                                <StackPanel Style="{StaticResource NavStackPanel}">
+                                    <TextBlock Style="{StaticResource NavIcon}" Text="&#xE71E;"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="{Binding Search}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem Name="NavListSettings" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
+                                <StackPanel Style="{StaticResource NavStackPanel}">
+                                    <TextBlock Style="{StaticResource NavIcon}" Text="&#xE713;"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="{Binding Settings}"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                    </Viewbox>
+                    
+                    <StackPanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Background="Transparent" Tapped="GPSRefresh_Tapped">
+                        <StackPanel Style="{StaticResource GPSInfoPanel}">
+                            <TextBlock Margin="5,0,0,0" FontSize="16" FontWeight="Bold" Text="{Binding GPSInfo}"/>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource GPSInfoPanel}" Tapped="GPSRefresh_Tapped">
+                            <TextBlock Style="{StaticResource GPSInfoIcon}" Text="&#xE81D;"/>
+                            <TextBlock Style="{StaticResource GPSInfoText}" Text="{Binding Status}"/>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource GPSInfoPanel}">
+                            <TextBlock Style="{StaticResource GPSInfoIcon}" Text="&#xE774;"/>
+                            <TextBlock Style="{StaticResource GPSInfoText}" Text="{Binding Source}"/>
+                        </StackPanel>
+
+                        <StackPanel Style="{StaticResource GPSInfoPanel}">
+                            <TextBlock Style="{StaticResource GPSInfoIcon}" Text="&#xE707;"/>
+                            <TextBlock Style="{StaticResource GPSInfoText}" Text="{Binding Accuracy}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="15,5">
+                            <TextBlock Text="Nav City Breda @"/>
+                            <TextBlock Text="{Binding Year}" Margin="5,0,0,0" />
+                        </StackPanel>
+
+                    </StackPanel>
+                </RelativePanel>
+            </SplitView.Pane>
+            
+            <SplitView.Content>
+                <Grid>
+                    <Frame Name="Frame"/>
+
+                    <StackPanel ManipulationMode="TranslateX"
+                          ManipulationCompleted="Content_ManipulationCompleted"
+                          Width="10"
+                          Background="Transparent"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Stretch">
+                    </StackPanel>
+
+                    <StackPanel Name="BackMessage" Background="LightGray" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,0,0,40" Visibility="Collapsed" Height="Auto">
+                        <TextBlock Text="{Binding BackText}" Margin="5" HorizontalAlignment="Center" TextAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
 </Page>

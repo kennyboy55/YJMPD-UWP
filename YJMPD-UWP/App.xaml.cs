@@ -1,27 +1,88 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using YJMPD_UWP.Model;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Globalization;
+using Windows.Graphics.Display;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace YJMPD_UWP
 {
-    /// <summary>
-    /// Provides application-specific behavior to supplement the default Application class.
-    /// </summary>
     sealed partial class App : Application
     {
+
+        public static Frame rootFrame;
+
+
+        // =======================
+        //      SINGLETONS
+        // =======================
+        private static GeoTracker geo = new GeoTracker();
+
+        public static GeoTracker Geo
+        {
+            get
+            {
+                return geo;
+            }
+        }
+
+        private static CompassTracker cm = new CompassTracker();
+
+        public static CompassTracker CompassTracker
+        {
+            get
+            {
+                return cm;
+            }
+        }
+
+        public static CoreDispatcher Dispatcher
+        {
+            get
+            {
+                return Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;
+            }
+        }
+
+
+        // =========================
+        // STATIC HELPER FUNCTIONS
+        // =========================
+
+        public static Size ScreenSize
+        {
+            get
+            {
+                var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+                var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+                Size size = new Size(bounds.Width * scaleFactor, bounds.Height * scaleFactor);
+                return size;
+            }
+        }
+
+        public static MainPage MainPage
+        {
+            get
+            {
+                Frame f = Window.Current.Content as Frame;
+                MainPage mp = f.Content as MainPage;
+                return mp;
+            }
+        }
+
+
+
+        // ===============================
+        // NORMAL STUFF
+        // ===============================
+
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -29,6 +90,7 @@ namespace YJMPD_UWP
         public App()
         {
             this.InitializeComponent();
+
             this.Suspending += OnSuspending;
         }
 
@@ -43,11 +105,11 @@ namespace YJMPD_UWP
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                this.DebugSettings.EnableFrameRateCounter = false;
             }
 #endif
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -74,6 +136,7 @@ namespace YJMPD_UWP
                 // parameter
                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+
             // Ensure the current window is active
             Window.Current.Activate();
         }
