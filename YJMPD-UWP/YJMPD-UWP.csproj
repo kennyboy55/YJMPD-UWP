@@ -95,16 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Comparer\LandmarkAlphaComparer.cs" />
-    <Compile Include="Helpers\Comparer\LandmarkAlphaReversedComparer.cs" />
-    <Compile Include="Helpers\Comparer\LandmarkNotVisitedComparer.cs" />
-    <Compile Include="Helpers\Comparer\LandmarkVisitedComparer.cs" />
-    <Compile Include="Helpers\Comparer\SearchLandmarkComparer.cs" />
-    <Compile Include="Helpers\Comparer\SearchRouteComparer.cs" />
-    <Compile Include="Helpers\Converter\BoolToVisibilityConverter.cs" />
-    <Compile Include="Helpers\Converter\StatusToIconConverter.cs" />
     <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\RouteParser.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -112,46 +103,13 @@
     </Compile>
     <Compile Include="Model\CompassTracker.cs" />
     <Compile Include="Model\GeoTracker.cs" />
-    <Compile Include="Model\Object\Image.cs" />
-    <Compile Include="Model\Object\Landmark.cs" />
-    <Compile Include="Model\Object\Route.cs" />
-    <Compile Include="Model\Object\Waypoint.cs" />
-    <Compile Include="Model\RouteManager.cs" />
-    <Compile Include="Model\SearchHandler.cs" />
-    <Compile Include="Model\Search\LandmarkResult.cs" />
-    <Compile Include="Model\Search\RouteResult.cs" />
-    <Compile Include="Model\Search\SearchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\HelpVM.cs" />
-    <Compile Include="ViewModels\LandmarkDetailVM.cs" />
-    <Compile Include="ViewModels\LandmarkVM.cs" />
     <Compile Include="ViewModels\MainPageVM.cs" />
-    <Compile Include="ViewModels\MapVM.cs" />
-    <Compile Include="ViewModels\RouteDetailVM.cs" />
-    <Compile Include="ViewModels\RouteVM.cs" />
-    <Compile Include="ViewModels\SearchVM.cs" />
     <Compile Include="ViewModels\SettingsVM.cs" />
     <Compile Include="ViewModels\TemplateVM.cs" />
     <Compile Include="Views\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LandmarkDetailView.xaml.cs">
-      <DependentUpon>LandmarkDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LandmarkView.xaml.cs">
-      <DependentUpon>LandmarkView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MapView.xaml.cs">
-      <DependentUpon>MapView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RouteDetailView.xaml.cs">
-      <DependentUpon>RouteDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RouteView.xaml.cs">
-      <DependentUpon>RouteView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SearchView.xaml.cs">
-      <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -198,34 +156,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LandmarkDetailView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\LandmarkView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MapView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\RouteDetailView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\RouteView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SearchView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\Comparer\" />
+    <Folder Include="Helpers\Converter\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
