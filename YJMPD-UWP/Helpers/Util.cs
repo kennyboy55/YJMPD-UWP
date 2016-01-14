@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
 using Windows.Data.Xml.Dom;
 using Windows.Devices.Geolocation;
 using Windows.Services.Maps;
@@ -16,14 +15,6 @@ namespace YJMPD_UWP.Helpers
     class Util
     {
         public enum DialogType { YESNO, OKCANCEL }
-
-        public static ResourceLoader Loader
-        {
-            get
-            {
-                return new Windows.ApplicationModel.Resources.ResourceLoader();
-            }
-        }
 
         public static double Now { get { return (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; } }
 
@@ -169,13 +160,13 @@ namespace YJMPD_UWP.Helpers
             MessageDialog dlg = new MessageDialog(content, title);
             if (type == DialogType.YESNO)
             {
-                dlg.Commands.Add(new UICommand(Util.Loader.GetString("Yes")) { Id = 0 });
-                dlg.Commands.Add(new UICommand(Util.Loader.GetString("No")) { Id = 1 });
+                dlg.Commands.Add(new UICommand("Yes") { Id = 0 });
+                dlg.Commands.Add(new UICommand("No") { Id = 1 });
             }
             else if (type == DialogType.OKCANCEL)
             {
-                dlg.Commands.Add(new UICommand(Util.Loader.GetString("Ok")) { Id = 0 });
-                dlg.Commands.Add(new UICommand(Util.Loader.GetString("Cancel")) { Id = 1 });
+                dlg.Commands.Add(new UICommand("Ok") { Id = 0 });
+                dlg.Commands.Add(new UICommand("Cancel") { Id = 1 });
             }
 
             dlg.DefaultCommandIndex = 0;
@@ -200,53 +191,53 @@ namespace YJMPD_UWP.Helpers
             switch (maneuver.Kind)
             {
                 default:
-                    response = Util.Loader.GetString("RouteSeeMap");
+                    response = "RouteSeeMap";
                     meters = false;
                     break;
                 case MapRouteManeuverKind.End:
-                    response = Util.Loader.GetString("RouteEnd");
+                    response = "RouteEnd";
                     break;
                 case MapRouteManeuverKind.GoStraight:
-                    response = Util.Loader.GetString("RouteGoStraight");
+                    response = "RouteGoStraight";
                     onstreet = true;
                     break;
                 case MapRouteManeuverKind.None:
-                    response = Util.Loader.GetString("RouteNone");
+                    response = "RouteNone";
                     meters = false;
                     break;
                 case MapRouteManeuverKind.Start:
-                    response = Util.Loader.GetString("RouteStart");
+                    response = "RouteStart";
                     meters = false;
                     break;
                 case MapRouteManeuverKind.TurnHardLeft:
                 case MapRouteManeuverKind.TurnLeft:
-                    response = Util.Loader.GetString("RouteLeft");
+                    response = "RouteLeft";
                     onstreet = true;
                     break;
                 case MapRouteManeuverKind.TurnHardRight:
                 case MapRouteManeuverKind.TurnRight:
-                    response = Util.Loader.GetString("RouteRight");
+                    response = "RouteRight";
                     onstreet = true;
                     break;
                 case MapRouteManeuverKind.TrafficCircleLeft:
-                    response = Util.Loader.GetString("RouteTrafficCircleLeft");
+                    response = "RouteTrafficCircleLeft";
                     onstreet = true;
                     break;
                 case MapRouteManeuverKind.TrafficCircleRight:
-                    response = Util.Loader.GetString("RouteTrafficCircleRight");
+                    response = "RouteTrafficCircleRight";
                     onstreet = true;
                     break;
                 case MapRouteManeuverKind.TurnKeepLeft:
                 case MapRouteManeuverKind.TurnLightLeft:
-                    response = Util.Loader.GetString("RouteKeepLeft");
+                    response = "RouteKeepLeft";
                     break;
                 case MapRouteManeuverKind.TurnKeepRight:
                 case MapRouteManeuverKind.TurnLightRight:
-                    response = Util.Loader.GetString("RouteKeepRight");
+                    response = "RouteKeepRight";
                     break;
                 case MapRouteManeuverKind.UTurnLeft:
                 case MapRouteManeuverKind.UTurnRight:
-                    response = Util.Loader.GetString("RouteUTurn");
+                    response = "RouteUTurn";
                     break;
             }
 
@@ -258,10 +249,10 @@ namespace YJMPD_UWP.Helpers
 
 
             if (onstreet)
-                response += " " + Util.Loader.GetString("RouteOn") + " " + maneuver.StreetName;
+                response += " " + "RouteOn" + " " + maneuver.StreetName;
 
             if (meters)
-                response = Util.Loader.GetString("RouteIn") + " " + distance + "m" + " " + response.ToLower();
+                response = "RouteIn" + " " + distance + "m" + " " + response.ToLower();
 
             return response;
         }

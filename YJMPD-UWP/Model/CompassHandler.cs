@@ -1,10 +1,11 @@
 ﻿using YJMPD_UWP.Helpers;
 using System;
 using Windows.Devices.Sensors;
+using YJMPD_UWP.Helpers.EventArgs;
 
 namespace YJMPD_UWP.Model
 {
-    public class CompassTracker
+    public class CompassHandler
     {
         public delegate void OnHeadingUpdateHandler(object sender, HeadingUpdatedEventArgs e);
         public event OnHeadingUpdateHandler OnHeadingUpdate;
@@ -20,7 +21,7 @@ namespace YJMPD_UWP.Model
         private CompassReading lastreading;
         private double lastreadingtime;
 
-        public CompassTracker()
+        public CompassHandler()
         {
             comp = Compass.GetDefault();
 
@@ -66,16 +67,6 @@ namespace YJMPD_UWP.Model
 
                 OnSlowHeadingUpdated(this, new HeadingUpdatedEventArgs(r));
             }
-        }
-    }
-
-    public class HeadingUpdatedEventArgs : EventArgs
-    {
-        public CompassReading Heading;
-
-        public HeadingUpdatedEventArgs(CompassReading heading)
-        {
-            Heading = heading;
         }
     }
 }

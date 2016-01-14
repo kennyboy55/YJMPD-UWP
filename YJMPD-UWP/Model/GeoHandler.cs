@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Devices.Geolocation.Geofencing;
 using Windows.System;
+using YJMPD_UWP.Helpers.EventArgs;
 
 namespace YJMPD_UWP.Model
 {
-    public class GeoTracker
+    public class GeoHandler
     {
         private Geolocator geo;
 
@@ -30,13 +31,13 @@ namespace YJMPD_UWP.Model
         }
 
         //Events
-        public delegate void PositionUpdateHandler(object sender, PositionUpdatedEventArgs e);
-        public event PositionUpdateHandler OnPositionUpdate;
+        public delegate void OnPositionUpdateHandler(object sender, PositionUpdatedEventArgs e);
+        public event OnPositionUpdateHandler OnPositionUpdate;
 
-        public delegate void StatusUpdateHandler(object sender, StatusUpdatedEventArgs e);
-        public event StatusUpdateHandler OnStatusUpdate;
+        public delegate void OnStatusUpdateHandler(object sender, PositionStatusUpdatedEventArgs e);
+        public event OnStatusUpdateHandler OnStatusUpdate;
 
-        public GeoTracker()
+        public GeoHandler()
         {
             _status = PositionStatus.NotInitialized;
             Connected = false;
@@ -140,7 +141,7 @@ namespace YJMPD_UWP.Model
 
             if (OnStatusUpdate == null) return;
 
-            OnStatusUpdate(this, new StatusUpdatedEventArgs(s));
+            OnStatusUpdate(this, new PositionStatusUpdatedEventArgs(s));
         }
 
         private void UpdatePosition(Geoposition old, Geoposition newp)
@@ -150,28 +151,6 @@ namespace YJMPD_UWP.Model
             if (OnPositionUpdate == null) return;
 
             OnPositionUpdate(this, new PositionUpdatedEventArgs(old, newp));
-        }
-    }
-
-    public class PositionUpdatedEventArgs : EventArgs
-    {
-        public Geoposition Old { get; private set; }
-        public Geoposition New { get; private set; }
-
-        public PositionUpdatedEventArgs(Geoposition old, Geoposition notold)
-        {
-            Old = old;
-            New = notold;
-        }
-    }
-
-    public class StatusUpdatedEventArgs : EventArgs
-    {
-        public PositionStatus Status { get; private set; }
-
-        public StatusUpdatedEventArgs(PositionStatus status)
-        {
-            Status = status;
         }
     }
 }

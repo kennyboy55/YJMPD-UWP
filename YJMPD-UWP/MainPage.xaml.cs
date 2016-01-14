@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using System.Diagnostics;
 
 namespace YJMPD_UWP
 {
@@ -17,16 +18,33 @@ namespace YJMPD_UWP
         double bptime;
         double lastbptime;
 
+
+
+        public Frame ContentFrame
+        {
+            get
+            {
+                return Frame;
+            }
+        }
+
+        public string Title { get { return PageTitle.Text; } set { PageTitle.Text = value; } }
+
+        MainPageVM mainpagevm;
+
         public MainPage()
         {
-            this.InitializeComponent();
-            Frame.Navigated += Frame_Navigated;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
 
             bptime = Util.Now;
 
-            this.DataContext = new MainPageVM();
-            Frame.Navigate(typeof(MapView));
+            mainpagevm = new MainPageVM();
+            this.DataContext = mainpagevm;
+
+            this.InitializeComponent();
+
+            Frame.Navigated += Frame_Navigated;
+            Frame.Navigate(typeof(MatchView));
         }
 
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -45,9 +63,12 @@ namespace YJMPD_UWP
 
             if (bptime - lastbptime > 2000)
             {
-                ShowHideBackMessage();
                 e.Handled = true;
+                ShowHideBackMessage();
+                return;
             }
+
+            BackMessage.Visibility = Visibility.Collapsed;
         }
 
         public async Task<String> ShowHideBackMessage()
@@ -57,18 +78,6 @@ namespace YJMPD_UWP
             BackMessage.Visibility = Visibility.Collapsed;
             return "success";
         }
-
-        public void Navigate(Type type)
-        {
-            Frame.Navigate(type);
-        }
-
-        public void Navigate(Type type, object param)
-        {
-            Frame.Navigate(type, param);
-        }
-
-        public string Title { get { return PageTitle.Text; } set { PageTitle.Text = value; } }
 
         public void NavButton_Click(object sender, RoutedEventArgs arg)
         {
@@ -84,28 +93,24 @@ namespace YJMPD_UWP
 
             switch (pagename.ToLower())
             {
-                default:
-                    PageTitle.Text = "Nav City Breda";
+                case "matchview":
+                    NavList.SelectedIndex = 0;
                     break;
-                case "helpview":
+                case "accountview":
+                    NavList.SelectedIndex = 1;
+                    break;
+                case "statisticsview":
+                    NavList.SelectedIndex = 2;
+                    break;
+                case "aboutview":
                     NavList.SelectedIndex = 3;
                     break;
                 case "settingsview":
-                    NavList.SelectedIndex = 5;
-                    break;
-                case "mapview":
-                    NavList.SelectedIndex = 0;
-                    break;
-                case "routeview":
-                case "routedetailview":
-                    NavList.SelectedIndex = 1;
-                    break;
-                case "landmarkdetailview":
-                case "landmarkview":
-                    NavList.SelectedIndex = 2;
-                    break;
-                case "searchview":
+                    Debug.WriteLine("Yes " + pagename);
                     NavList.SelectedIndex = 4;
+                    break;
+                default:
+                    PageTitle.Text = "YJMPD-UWP";
                     break;
             }
 
@@ -118,11 +123,31 @@ namespace YJMPD_UWP
         private void NavList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             NavView.IsPaneOpen = false;
+
+            if (NavListHome.IsSelected)
+                Frame.Navigate(typeof(MatchView));
+            else
+            if (NavListAccount.IsSelected)
+                Frame.Navigate(typeof(AccountView));
+            else
+            if (NavListStatistics.IsSelected)
+                Frame.Navigate(typeof(StatisticsView));
+            else
+            if (NavListAbout.IsSelected)
+                Frame.Navigate(typeof(AboutView));
+            else
+            if (NavListSettings.IsSelected)
+                Frame.Navigate(typeof(SettingsView));
         }
 
         private void NavList_Tapped(object sender, TappedRoutedEventArgs e)
         {
             NavView.IsPaneOpen = false;
+        }
+
+        private async void BackToGame_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            bool b = await Util.ShowConfirmDialog("Not implemented", "", Util.DialogType.OKCANCEL);
         }
 
         private void Content_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
@@ -139,11 +164,6 @@ namespace YJMPD_UWP
             {
                 NavView.IsPaneOpen = false;
             }
-        }
-
-        private void GPSRefresh_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            App.Geo.ForceRefresh();
         }
     }
 }

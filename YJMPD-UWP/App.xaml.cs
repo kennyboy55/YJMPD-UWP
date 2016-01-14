@@ -3,7 +3,6 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.Globalization;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -16,37 +15,46 @@ namespace YJMPD_UWP
     sealed partial class App : Application
     {
 
-        public static Frame rootFrame;
-
-
         // =======================
         //      SINGLETONS
         // =======================
-        private static GeoTracker geo = new GeoTracker();
+        private static GeoHandler geohandler = new GeoHandler();
 
-        public static GeoTracker Geo
+        public static GeoHandler Geo
         {
             get
             {
-                return geo;
+                return geohandler;
             }
         }
 
-        private static CompassTracker cm = new CompassTracker();
+        private static CompassHandler compasshandler = new CompassHandler();
 
-        public static CompassTracker CompassTracker
+        public static CompassHandler Compass
         {
             get
             {
-                return cm;
+                return compasshandler;
             }
         }
 
-        public static CoreDispatcher Dispatcher
+        private static NetworkHandler networkhandler = new NetworkHandler();
+
+        public static NetworkHandler Network
         {
             get
             {
-                return Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;
+                return networkhandler;
+            }
+        }
+
+        private static GameHandler gamehandler = new GameHandler();
+
+        public static GameHandler Game
+        {
+            get
+            {
+                return gamehandler;
             }
         }
 
@@ -66,6 +74,23 @@ namespace YJMPD_UWP
             }
         }
 
+        public static CoreDispatcher Dispatcher
+        {
+            get
+            {
+                return Windows.UI.Core.CoreWindow.GetForCurrentThread().Dispatcher;
+            }
+        }
+
+        public static Frame MainFrame
+        {
+            get
+            {
+                Frame f = Window.Current.Content as Frame;
+                return f;
+            }
+        }
+
         public static MainPage MainPage
         {
             get
@@ -75,6 +100,29 @@ namespace YJMPD_UWP
                 return mp;
             }
         }
+
+        public static Frame ContentFrame
+        {
+            get
+            {
+                Frame f = Window.Current.Content as Frame;
+                MainPage mp = f.Content as MainPage;
+                Frame cf = mp.ContentFrame;
+                return cf;
+            }
+        }
+
+        public static bool Navigate(Type type)
+        {
+            return ContentFrame.Navigate(type);
+        }
+
+        public static bool Navigate(Type type, object param)
+        {
+            return ContentFrame.Navigate(type, param);
+        }
+
+
 
 
 
@@ -109,7 +157,7 @@ namespace YJMPD_UWP
             }
 #endif
 
-            rootFrame = Window.Current.Content as Frame;
+            Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -119,11 +167,6 @@ namespace YJMPD_UWP
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;

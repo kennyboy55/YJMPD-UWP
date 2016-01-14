@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;CS4014</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -95,24 +95,44 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Helpers\EventArgs\GameStatusUpdatedEventArgs.cs" />
+    <Compile Include="Helpers\EventArgs\HeadingUpdatedEventArgs.cs" />
+    <Compile Include="Helpers\EventArgs\NetworkStatusUpdatedEventArgs.cs" />
+    <Compile Include="Helpers\EventArgs\PositionStatusUpdatedEventArgs.cs" />
+    <Compile Include="Helpers\EventArgs\PositionUpdatedEventArgs.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\CompassTracker.cs" />
-    <Compile Include="Model\GeoTracker.cs" />
+    <Compile Include="Model\CompassHandler.cs" />
+    <Compile Include="Model\GameHandler.cs" />
+    <Compile Include="Model\GeoHandler.cs" />
+    <Compile Include="Model\NetworkHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\HelpVM.cs" />
+    <Compile Include="ViewModels\AboutVM.cs" />
+    <Compile Include="ViewModels\AccountVM.cs" />
     <Compile Include="ViewModels\MainPageVM.cs" />
+    <Compile Include="ViewModels\MatchVM.cs" />
     <Compile Include="ViewModels\SettingsVM.cs" />
+    <Compile Include="ViewModels\StatisticsVM.cs" />
     <Compile Include="ViewModels\TemplateVM.cs" />
-    <Compile Include="Views\HelpView.xaml.cs">
-      <DependentUpon>HelpView.xaml</DependentUpon>
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AccountView.xaml.cs">
+      <DependentUpon>AccountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MatchView.xaml.cs">
+      <DependentUpon>MatchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatisticsView.xaml.cs">
+      <DependentUpon>StatisticsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -152,18 +172,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\HelpView.xaml">
+    <Page Include="Views\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AccountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MatchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\StatisticsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\Comparer\" />
-    <Folder Include="Helpers\Converter\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
