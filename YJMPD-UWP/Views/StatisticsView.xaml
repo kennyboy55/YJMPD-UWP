@@ -7,7 +7,49 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <ScrollViewer>
+        <StackPanel Style="{StaticResource Base}" >
 
-    </Grid>
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="{Binding Information}" Style="{StaticResource Subtext}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="Total Distance Walked" Style="{StaticResource Header}" />
+                <TextBlock Text="{Binding Distance}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="Total Matches" Style="{StaticResource Header}" />
+                <TextBlock Text="{Binding MatchesCount}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="Times Leader" Style="{StaticResource Header}" />
+                <TextBlock Text="{Binding LeaderCount}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Text="Points" Style="{StaticResource Header}" />
+                <RelativePanel>
+                    <TextBlock Text="Total:" Style="{StaticResource Subtext}" RelativePanel.AlignLeftWithPanel="True"/>
+                    <TextBlock Text="{Binding PointsTotal}" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+                <RelativePanel>
+                    <TextBlock Text="Avg:" Style="{StaticResource Subtext}" RelativePanel.AlignLeftWithPanel="True"/>
+                    <TextBlock Text="{Binding PointsAverage}" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+                <RelativePanel>
+                    <TextBlock Text="Max:" Style="{StaticResource Subtext}" RelativePanel.AlignLeftWithPanel="True"/>
+                    <TextBlock Text="{Binding PointsMax}" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+                <RelativePanel>
+                    <TextBlock Text="Min:" Style="{StaticResource Subtext}" RelativePanel.AlignLeftWithPanel="True"/>
+                    <TextBlock Text="{Binding PointsMin}" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+                
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
 </Page>

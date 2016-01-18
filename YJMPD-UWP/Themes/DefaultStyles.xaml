@@ -3,13 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:YJMPD_UWP.Themes">
 
-    <Style TargetType="SymbolIcon" x:Key="InfoIcon">
-        <Setter Property="Foreground" Value="Gray" />
+    <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="InfoText">
-        <Setter Property="Foreground" Value="Gray" />
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="Margin" Value="5,0,0,0" />
+
+    <Style TargetType="StackPanel" x:Key="Base">
+        <Setter Property="Margin" Value="10" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="Header">
@@ -17,5 +16,22 @@
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Margin" Value="0,0,0,3" />
     </Style>
-    
+
+    <Style TargetType="TextBlock" x:Key="Subtext">
+        <Setter Property="Foreground" Value="Gray" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="Green">
+        <Setter Property="Background" Value="DarkGreen" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="Red">
+        <Setter Property="Background" Value="DarkRed" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
 </ResourceDictionary>

@@ -11,7 +11,7 @@ namespace YJMPD_UWP.Model
     public class NetworkHandler
     {
         public delegate void OnStatusUpdatedHandler(object sender, NetworkStatusUpdatedEventArgs e);
-        public OnStatusUpdatedHandler OnStatusUpdated;
+        public event OnStatusUpdatedHandler OnStatusUpdate;
 
         public enum NetworkStatus { DISCONNECTED, CONNECTING, CONNECTED }
         public NetworkStatus Status { get; private set; }
@@ -24,9 +24,9 @@ namespace YJMPD_UWP.Model
         {
             Status = status;
 
-            if (OnStatusUpdated == null) return;
+            if (OnStatusUpdate == null) return;
 
-            OnStatusUpdated(this, new NetworkStatusUpdatedEventArgs(status));
+            OnStatusUpdate(this, new NetworkStatusUpdatedEventArgs(status));
         }
 
         public NetworkHandler()
@@ -89,6 +89,9 @@ namespace YJMPD_UWP.Model
         private async Task<bool> OpenConnection()
         {
             UpdateNetworkStatus(NetworkStatus.CONNECTING);
+
+            UpdateNetworkStatus(NetworkStatus.CONNECTED);
+            return false;
 
             client = new StreamSocket();
 

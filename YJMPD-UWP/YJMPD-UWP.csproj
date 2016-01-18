@@ -45,7 +45,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\ARM\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
-    <NoWarn>;2008</NoWarn>
+    <NoWarn>;2008;4014</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>ARM</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Helpers\EventArgs\GamePlayersUpdatedEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\GameStatusUpdatedEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\HeadingUpdatedEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\NetworkStatusUpdatedEventArgs.cs" />
@@ -111,9 +112,10 @@
     <Compile Include="Model\GameHandler.cs" />
     <Compile Include="Model\GeoHandler.cs" />
     <Compile Include="Model\NetworkHandler.cs" />
+    <Compile Include="Model\Object\Statistics.cs" />
+    <Compile Include="Model\PhotoHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AboutVM.cs" />
-    <Compile Include="ViewModels\AccountVM.cs" />
     <Compile Include="ViewModels\MainPageVM.cs" />
     <Compile Include="ViewModels\MatchVM.cs" />
     <Compile Include="ViewModels\SettingsVM.cs" />
@@ -121,9 +123,6 @@
     <Compile Include="ViewModels\TemplateVM.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AccountView.xaml.cs">
-      <DependentUpon>AccountView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MatchView.xaml.cs">
       <DependentUpon>MatchView.xaml</DependentUpon>
@@ -175,10 +174,6 @@
     <Page Include="Views\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AccountView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MatchView.xaml">
       <SubType>Designer</SubType>

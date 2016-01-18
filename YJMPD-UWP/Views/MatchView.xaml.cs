@@ -13,5 +13,15 @@ namespace YJMPD_UWP.Views
             this.DataContext = matchvm;
             this.InitializeComponent();
         }
+
+        private void StartMatchButton_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            App.Game.Start();
+        }
+
+        private void StopMatchButton_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            App.Game.Stop();
+        }
     }
 }

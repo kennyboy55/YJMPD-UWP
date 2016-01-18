@@ -9,6 +9,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using YJMPD_UWP.Helpers;
 
 namespace YJMPD_UWP
 {
@@ -114,11 +115,13 @@ namespace YJMPD_UWP
 
         public static bool Navigate(Type type)
         {
+            App.Geo.TryConnectIfNull();
             return ContentFrame.Navigate(type);
         }
 
         public static bool Navigate(Type type, object param)
         {
+            App.Geo.TryConnectIfNull();
             return ContentFrame.Navigate(type, param);
         }
 

@@ -11,7 +11,7 @@ namespace YJMPD_UWP.Model
         public event OnHeadingUpdateHandler OnHeadingUpdate;
 
         public delegate void OnHeadingUpdateSlowHandler(object sender, HeadingUpdatedEventArgs e);
-        public event OnHeadingUpdateSlowHandler OnSlowHeadingUpdated;
+        public event OnHeadingUpdateSlowHandler OnSlowHeadingUpdate;
 
         private Compass comp;
 
@@ -63,9 +63,9 @@ namespace YJMPD_UWP.Model
                 lastreadingtime = Util.Now;
 
                 //Make sure someone is listening
-                if (OnSlowHeadingUpdated == null) return;
+                if (OnSlowHeadingUpdate == null) return;
 
-                OnSlowHeadingUpdated(this, new HeadingUpdatedEventArgs(r));
+                OnSlowHeadingUpdate(this, new HeadingUpdatedEventArgs(r));
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using YJMPD_UWP.Helpers.EventArgs;
 
 namespace YJMPD_UWP.Model
@@ -8,8 +9,13 @@ namespace YJMPD_UWP.Model
         public delegate void OnStatusUpdateHandler(object sender, GameStatusUpdatedEventArgs e);
         public event OnStatusUpdateHandler OnStatusUpdate;
 
-        public enum GameStatus { STOPPING, STOPPED, SEARCHING, WAITING, ENDED, STARTING, STARTED }
+        public delegate void OnPlayersUpdateHandler(object sender, GamePlayersUpdatedEventArgs e);
+        public event OnPlayersUpdateHandler OnPlayersUpdate;
+
+        public enum GameStatus { STARTED, SEARCHING, WAITING, ENDED, STOPPED }
         public GameStatus Status { get; private set; }
+
+        public Dictionary<string, double> Players { get; private set; }
 
         private void UpdateGameStatus(GameStatus status)
         {
@@ -19,13 +25,29 @@ namespace YJMPD_UWP.Model
 
             OnStatusUpdate(this, new GameStatusUpdatedEventArgs(status));
         }
+        private void UpdateGamePlayers(string username, double points)
+        {
+            if (OnPlayersUpdate == null) return;
+
+            OnPlayersUpdate(this, new GamePlayersUpdatedEventArgs(username, points));
+        }
 
         public GameHandler()
         {
+            Players = new Dictionary<string, double>();
             Status = GameStatus.STOPPED;
         }
 
-
+        public void AddPlayer(string username, double points)
+        {
+            Players.Add(username, points);
+            UpdateGamePlayers(username, points);
+        }
+        public void UpdatePlayer(string username, double points)
+        {
+            Players.Remove(username);
+            AddPlayer(username, points);
+        }
 
 
         //Searching
@@ -39,16 +61,8 @@ namespace YJMPD_UWP.Model
         {
             UpdateGameStatus(GameStatus.SEARCHING);
 
-            bool foundgame;
+            await App.Network.SearchGame();
 
-            foundgame = await App.Network.SearchGame();
-
-            //Do stuff
-
-            if (foundgame)
-                await Start();
-            else
-                await Stop();
             return true;
         }
 
@@ -66,7 +80,6 @@ namespace YJMPD_UWP.Model
 
         private async Task<bool> StartGame()
         {
-            UpdateGameStatus(GameStatus.STARTING);
 
             //Do stuff
 
@@ -76,7 +89,6 @@ namespace YJMPD_UWP.Model
 
         private async Task<bool> StopGame()
         {
-            UpdateGameStatus(GameStatus.STOPPING);
 
             //Do stuff
 

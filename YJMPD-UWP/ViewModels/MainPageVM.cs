@@ -6,22 +6,40 @@ namespace YJMPD_UWP.ViewModels
     {
         public MainPageVM() : base("Loading")
         {
-            
+            App.Game.OnStatusUpdate += Game_OnStatusUpdate;
+            App.Game.OnPlayersUpdate += Game_OnPlayersUpdate;
+        }
+
+        private void Game_OnPlayersUpdate(object sender, Helpers.EventArgs.GamePlayersUpdatedEventArgs e)
+        {
+            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                NotifyPropertyChanged(nameof(Players));
+            });
+        }
+
+        private void Game_OnStatusUpdate(object sender, Helpers.EventArgs.GameStatusUpdatedEventArgs e)
+        {
+            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                NotifyPropertyChanged(nameof(GameState));
+                NotifyPropertyChanged(nameof(GameVisible));
+            });
         }
 
         public string GameState
         {
             get
             {
-                return "N/A";
+                return App.Game.Status.ToString();
             }
         }
 
-        public string People
+        public string Players
         {
             get
             {
-                return "0/0";
+                return App.Game.Players.Count + " players";
             }
         }
 
@@ -29,7 +47,7 @@ namespace YJMPD_UWP.ViewModels
         {
             get
             {
-                return true;
+                return App.Game.Status != Model.GameHandler.GameStatus.STOPPED;
             }
         }
 

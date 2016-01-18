@@ -96,18 +96,14 @@ namespace YJMPD_UWP
                 case "matchview":
                     NavList.SelectedIndex = 0;
                     break;
-                case "accountview":
+                case "statisticsview":
                     NavList.SelectedIndex = 1;
                     break;
-                case "statisticsview":
+                case "aboutview":
                     NavList.SelectedIndex = 2;
                     break;
-                case "aboutview":
-                    NavList.SelectedIndex = 3;
-                    break;
                 case "settingsview":
-                    Debug.WriteLine("Yes " + pagename);
-                    NavList.SelectedIndex = 4;
+                    NavList.SelectedIndex = 3;
                     break;
                 default:
                     PageTitle.Text = "YJMPD-UWP";
@@ -126,9 +122,6 @@ namespace YJMPD_UWP
 
             if (NavListHome.IsSelected)
                 Frame.Navigate(typeof(MatchView));
-            else
-            if (NavListAccount.IsSelected)
-                Frame.Navigate(typeof(AccountView));
             else
             if (NavListStatistics.IsSelected)
                 Frame.Navigate(typeof(StatisticsView));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,40 @@ namespace YJMPD_UWP.Helpers
     {
         public enum DialogType { YESNO, OKCANCEL }
 
+        public enum RandomType { ALPHA, NUMERIC, ALPHANUMERIC }
+        private static string AlphaSource = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        private static string NumericSource = "0123456789";
+
         public static double Now { get { return (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds; } }
+
+        public static string Random(int length, RandomType type)
+        {
+            string str = "";
+
+            string source = "";
+            switch(type)
+            {
+                case RandomType.ALPHA:
+                    source = AlphaSource;
+                    break;
+                case RandomType.NUMERIC:
+                    source = NumericSource;
+                    break;
+                default:
+                case RandomType.ALPHANUMERIC:
+                    source = AlphaSource + NumericSource;
+                    break;
+            }
+
+            Random rand = new Random();
+
+            for(int i = 0; i<length; i++)
+            {
+                str += source.ElementAt(rand.Next(0,source.Length-1));
+            }
+
+            return str;
+        }
 
         public static string MillisecondsToTime(double millis)
         {
@@ -24,6 +58,18 @@ namespace YJMPD_UWP.Helpers
             string timestr = time.AddMilliseconds(millis) + "";
             return timestr;
         }
+
+        public static string Serialize<E>(E o)
+        {
+            return JsonConvert.SerializeObject(o);
+        }
+
+        public static E Deserialize<E>(string s)
+        {
+            return JsonConvert.DeserializeObject<E>(s);
+        }
+
+        //GPS
 
         public static async Task<Geopoint> FindLocation(string location, Geopoint reference)
         {
@@ -85,56 +131,6 @@ namespace YJMPD_UWP.Helpers
             return address;
         }
 
-        public static MapPolyline GetRouteLine(MapRoute m, Color color, int zindex, int thickness = 5)
-        {
-            var line = new MapPolyline
-            {
-                StrokeThickness = thickness,
-                StrokeColor = color,
-                StrokeDashed = false,
-                ZIndex = zindex
-            };
-
-            if (m != null)
-                line.Path = new Geopath(m.Path.Positions);
-
-            return line;
-        }
-
-        public static MapPolyline GetRouteLine(List<BasicGeoposition> positions, Color color, int zindex, int thickness = 5)
-        {
-            var line = new MapPolyline
-            {
-                StrokeThickness = thickness,
-                StrokeColor = color,
-                StrokeDashed = false,
-                ZIndex = zindex
-            };
-
-            line.Path = new Geopath(positions);
-
-            return line;
-        }
-
-        public static MapPolyline GetRouteLine(BasicGeoposition p1, BasicGeoposition p2, Color color, int zindex, int thickness = 5)
-        {
-            var line = new MapPolyline
-            {
-                StrokeThickness = thickness,
-                StrokeColor = color,
-                StrokeDashed = false,
-                ZIndex = zindex
-            };
-
-            List<BasicGeoposition> plist = new List<BasicGeoposition>();
-            plist.Add(p1);
-            plist.Add(p2);
-
-            line.Path = new Geopath(plist);
-
-            return line;
-        }
-
         public static void ShowToastNotification(string title, string text)
         {
             ToastTemplateType toastTemplate = ToastTemplateType.ToastText02;
@@ -178,83 +174,6 @@ namespace YJMPD_UWP.Helpers
                 return true;
             else
                 return false;
-        }
-
-        public static string TranslatedManeuver(MapRouteManeuver maneuver, int distance)
-        {
-            string response = "";
-            bool onstreet = false;
-            bool meters = true;
-
-            distance = (int)Math.Round(distance / 5.0) * 5;
-
-            switch (maneuver.Kind)
-            {
-                default:
-                    response = "RouteSeeMap";
-                    meters = false;
-                    break;
-                case MapRouteManeuverKind.End:
-                    response = "RouteEnd";
-                    break;
-                case MapRouteManeuverKind.GoStraight:
-                    response = "RouteGoStraight";
-                    onstreet = true;
-                    break;
-                case MapRouteManeuverKind.None:
-                    response = "RouteNone";
-                    meters = false;
-                    break;
-                case MapRouteManeuverKind.Start:
-                    response = "RouteStart";
-                    meters = false;
-                    break;
-                case MapRouteManeuverKind.TurnHardLeft:
-                case MapRouteManeuverKind.TurnLeft:
-                    response = "RouteLeft";
-                    onstreet = true;
-                    break;
-                case MapRouteManeuverKind.TurnHardRight:
-                case MapRouteManeuverKind.TurnRight:
-                    response = "RouteRight";
-                    onstreet = true;
-                    break;
-                case MapRouteManeuverKind.TrafficCircleLeft:
-                    response = "RouteTrafficCircleLeft";
-                    onstreet = true;
-                    break;
-                case MapRouteManeuverKind.TrafficCircleRight:
-                    response = "RouteTrafficCircleRight";
-                    onstreet = true;
-                    break;
-                case MapRouteManeuverKind.TurnKeepLeft:
-                case MapRouteManeuverKind.TurnLightLeft:
-                    response = "RouteKeepLeft";
-                    break;
-                case MapRouteManeuverKind.TurnKeepRight:
-                case MapRouteManeuverKind.TurnLightRight:
-                    response = "RouteKeepRight";
-                    break;
-                case MapRouteManeuverKind.UTurnLeft:
-                case MapRouteManeuverKind.UTurnRight:
-                    response = "RouteUTurn";
-                    break;
-            }
-
-            if (maneuver.StreetName == "")
-                onstreet = false;
-
-            if (distance < 10)
-                meters = false;
-
-
-            if (onstreet)
-                response += " " + "RouteOn" + " " + maneuver.StreetName;
-
-            if (meters)
-                response = "RouteIn" + " " + distance + "m" + " " + response.ToLower();
-
-            return response;
         }
     }
 }
