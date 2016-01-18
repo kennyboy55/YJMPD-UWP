@@ -112,6 +112,7 @@
     <Compile Include="Model\GameHandler.cs" />
     <Compile Include="Model\GeoHandler.cs" />
     <Compile Include="Model\NetworkHandler.cs" />
+    <Compile Include="Model\Object\Player.cs" />
     <Compile Include="Model\Object\Statistics.cs" />
     <Compile Include="Model\PhotoHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

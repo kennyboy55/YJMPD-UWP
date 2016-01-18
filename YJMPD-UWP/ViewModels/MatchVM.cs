@@ -1,4 +1,7 @@
-﻿namespace YJMPD_UWP.ViewModels
+﻿using System.Collections.Generic;
+using YJMPD_UWP.Model.Object;
+
+namespace YJMPD_UWP.ViewModels
 {
     public class MatchVM : TemplateVM
     {
@@ -7,6 +10,16 @@
             App.Geo.OnStatusUpdate += Geo_OnStatusUpdate;
             App.Network.OnStatusUpdate += Network_OnStatusUpdate;
             App.Game.OnStatusUpdate += Game_OnStatusUpdate;
+            App.Game.OnPlayersUpdate += Game_OnPlayersUpdate;
+        }
+
+        private void Game_OnPlayersUpdate(object sender, Helpers.EventArgs.GamePlayersUpdatedEventArgs e)
+        {
+            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                NotifyPropertyChanged(nameof(Players));
+                NotifyPropertyChanged(nameof(PlayersCount));
+            });
         }
 
         private void Game_OnStatusUpdate(object sender, Helpers.EventArgs.GameStatusUpdatedEventArgs e)
@@ -34,6 +47,22 @@
             });
         }
         
+
+        public List<Player> Players
+        {
+            get
+            {
+                return new List<Player>(App.Game.Players);
+            }
+        }
+
+        public string PlayersCount
+        {
+            get
+            {
+                return "There are currently " + App.Game.Players.Count + " players in the match.";
+            }
+        }
 
         public bool MatchAvailable
         {

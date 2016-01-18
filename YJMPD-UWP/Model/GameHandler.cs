@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YJMPD_UWP.Helpers.EventArgs;
+using YJMPD_UWP.Model.Object;
 
 namespace YJMPD_UWP.Model
 {
@@ -15,7 +17,7 @@ namespace YJMPD_UWP.Model
         public enum GameStatus { STARTED, SEARCHING, WAITING, ENDED, STOPPED }
         public GameStatus Status { get; private set; }
 
-        public Dictionary<string, double> Players { get; private set; }
+        public List<Player> Players { get; private set; }
 
         private void UpdateGameStatus(GameStatus status)
         {
@@ -25,28 +27,43 @@ namespace YJMPD_UWP.Model
 
             OnStatusUpdate(this, new GameStatusUpdatedEventArgs(status));
         }
-        private void UpdateGamePlayers(string username, double points)
+        private void UpdateGamePlayers(Player player)
         {
             if (OnPlayersUpdate == null) return;
 
-            OnPlayersUpdate(this, new GamePlayersUpdatedEventArgs(username, points));
+            OnPlayersUpdate(this, new GamePlayersUpdatedEventArgs(player));
         }
 
         public GameHandler()
         {
-            Players = new Dictionary<string, double>();
+            Players = new List<Player>();
             Status = GameStatus.STOPPED;
         }
 
-        public void AddPlayer(string username, double points)
+        public void AddPlayer(string username)
         {
-            Players.Add(username, points);
-            UpdateGamePlayers(username, points);
+            Player p = new Player(username);
+            Players.Add(p);
+            UpdateGamePlayers(p);
         }
-        public void UpdatePlayer(string username, double points)
+
+        public void Reset()
         {
-            Players.Remove(username);
-            AddPlayer(username, points);
+            Players.Clear();
+            UpdateGamePlayers(null);
+        }
+
+        public void UpdatePlayer(string username, double pointstotal, double points)
+        {
+            foreach(Player p in Players)
+            {
+                if(p.Username == username)
+                {
+                    p.Update(pointstotal, points);
+                    UpdateGamePlayers(p);
+                    return;
+                }
+            }
         }
 
 
@@ -83,13 +100,25 @@ namespace YJMPD_UWP.Model
 
             //Do stuff
 
+            UpdateGameStatus(GameStatus.SEARCHING);
+
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            AddPlayer("Kenneth");
+            await Task.Delay(TimeSpan.FromSeconds(1));
+            AddPlayer("Yorick");
+
+            UpdateGameStatus(GameStatus.WAITING);
+
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
             UpdateGameStatus(GameStatus.STARTED);
+
             return true;
         }
 
         private async Task<bool> StopGame()
         {
-
+            Reset();
             //Do stuff
 
             UpdateGameStatus(GameStatus.STOPPED);

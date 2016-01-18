@@ -16,8 +16,25 @@
         <StackPanel Style="{StaticResource Base}" >
             <StackPanel>
                 <TextBlock Text="Start a match" Style="{StaticResource Header}" />
-                <Button Content="Start" Style="{StaticResource Green}" Tapped="StartMatchButton_Tapped" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
-                <Button Content="Stop" Style="{StaticResource Red}" Tapped="StopMatchButton_Tapped" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
+                <Button Content="Start match" Style="{StaticResource Green}" Tapped="StartMatchButton_Tapped" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
+                <Button Content="Leave match" Style="{StaticResource Red}" Tapped="StopMatchButton_Tapped" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
+            </StackPanel>
+
+            <StackPanel Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" Margin="0,10,0,0">
+                <TextBlock Text="Current players in match" Style="{StaticResource Header}" />
+
+                <TextBlock Text="{Binding PlayersCount}" />
+
+                <ListView x:Name="PlayersList" ItemsSource="{Binding Players}" SelectionMode="None" IsTapEnabled="False">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:Name="ListViewDataTemplate">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Username}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
