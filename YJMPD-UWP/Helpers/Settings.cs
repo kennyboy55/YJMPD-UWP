@@ -10,6 +10,7 @@ namespace YJMPD_UWP.Helpers
         static Settings()
         {
             //Define default settings here
+            Values["hostname"] = "imegumii.space";
         }
     }
 }
