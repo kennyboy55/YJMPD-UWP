@@ -50,7 +50,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="0" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -147,7 +147,10 @@
                           HorizontalAlignment="Left"
                           VerticalAlignment="Stretch">
                     </StackPanel>
-
+                    <Image x:Name="image" Margin="-10,0,0,0" Source="Assets/4-[Omgezet].png" Stretch="UniformToFill"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    <Image Source="Assets/start-button2.png" Margin="256,0,225,186" Height="54" Width="159" VerticalAlignment="Bottom" HorizontalAlignment="Center"  />
+                    <Image Source="Assets/settings-button.png" Margin="108,0,389,186" Width="143" Height="54" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+                    <Image Source="Assets/about-button.png" Margin="420,0,94,186" Height="54" Width="126" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
                     <StackPanel Name="BackMessage" Background="LightGray" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0,0,0,40" Visibility="Collapsed" Height="Auto">
                         <TextBlock Text="Press back again to exit" Margin="5" HorizontalAlignment="Center" TextAlignment="Center"/>
                     </StackPanel>
