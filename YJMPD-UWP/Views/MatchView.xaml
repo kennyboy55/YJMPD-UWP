@@ -13,7 +13,7 @@
     </Page.Resources>
     
     <ScrollViewer>
-        <StackPanel Style="{StaticResource Base}" >
+        <StackPanel Style="{StaticResource BaseStackPanel}" >
             <StackPanel>
                 <TextBlock Text="Start a match" Style="{StaticResource Header}" />
                 <Button Content="Start match" Style="{StaticResource Green}" Click="StartMatchButton_Click" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />

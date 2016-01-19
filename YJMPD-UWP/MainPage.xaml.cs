@@ -140,7 +140,11 @@ namespace YJMPD_UWP
 
         private async void BackToGame_Click(object sender, RoutedEventArgs e)
         {
-            bool b = await Util.ShowConfirmDialog("Not implemented", "", Util.DialogType.OKCANCEL);
+            bool b = await Util.ShowConfirmDialog("View Scores", "Go to the scores page (test)?", Util.DialogType.OKCANCEL);
+            if(b)
+            {
+                App.Navigate(typeof(ScoreView));
+            }
         }
 
         private void Content_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)

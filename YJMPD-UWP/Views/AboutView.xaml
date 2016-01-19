@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel Style="{StaticResource Base}" >
+        <StackPanel Style="{StaticResource BaseStackPanel}" >
             <StackPanel>
                 <TextBlock Style="{StaticResource Header}" Text="About this app" />
                 <TextBlock>

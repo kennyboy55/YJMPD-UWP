@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel Style="{StaticResource Base}" >
+        <StackPanel Style="{StaticResource BaseStackPanel}" >
             <StackPanel>
                 <TextBlock Text="Username" Style="{StaticResource Header}" />
                 <TextBox Text="{Binding Username, Mode=TwoWay}" />
