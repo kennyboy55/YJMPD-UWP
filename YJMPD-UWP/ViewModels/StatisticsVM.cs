@@ -33,7 +33,7 @@ namespace YJMPD_UWP.ViewModels
         {
             get
             {
-                return st.Leader + "";
+                return st.Selected + "";
             }
         }
 

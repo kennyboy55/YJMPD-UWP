@@ -10,6 +10,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.ApplicationModel.Core;
+using YJMPD_UWP.Helpers;
 
 namespace YJMPD_UWP
 {
@@ -259,6 +260,7 @@ namespace YJMPD_UWP
             var deferral = e.SuspendingOperation.GetDeferral();
 
             App.Network.Disconnect();
+            Settings.SaveStatistics();
 
             deferral.Complete();
         }

@@ -34,6 +34,11 @@ namespace YJMPD_UWP.Helpers
             }
         }
 
+        public static void SaveStatistics()
+        {
+            Values["statistics"] = Util.Serialize(st);
+        }
+
 
         public static string Username
         {

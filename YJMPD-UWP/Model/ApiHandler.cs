@@ -49,7 +49,7 @@ namespace YJMPD_UWP.Model
                     if (o["selected"].ToObject<bool>() == true)
                     {
                         Debug.WriteLine("Selected player taking picture");
-                        App.Game.Selected = true;
+                        App.Game.SetSelected(true);
                         App.Navigate(typeof(PhotoView));
                     }
                     else

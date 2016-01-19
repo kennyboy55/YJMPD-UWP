@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation.Geofencing;
 using Windows.Foundation;
+using Windows.Services.Maps;
 using Windows.UI.Xaml.Media.Imaging;
 using YJMPD_UWP.Helpers;
 using YJMPD_UWP.Helpers.EventArgs;
@@ -24,11 +27,16 @@ namespace YJMPD_UWP.Model
 
         public List<Player> Players { get; private set; }
 
-        public bool Selected { get; set; }
+        public bool Selected { get; private set; }
 
         private void UpdateGameStatus(GameStatus status)
         {
             Status = status;
+
+            if (Status == GameStatus.STARTED)
+                App.Geo.KeepHistory();
+            else
+                App.Geo.ClearHistory();
 
             if (OnStatusUpdate == null) return;
 
@@ -54,6 +62,17 @@ namespace YJMPD_UWP.Model
             UpdateGamePlayers(p);
         }
 
+        public void SetSelected(bool b)
+        {
+            if (b)
+            {
+                Selected = true;
+                Settings.Statistics.Selected += 1;
+            }
+            else
+                Selected = false;
+        }
+
         public void MoveToWaiting()
         {
             UpdateGameStatus(GameStatus.WAITING);
@@ -77,6 +96,7 @@ namespace YJMPD_UWP.Model
             App.Photo.Reset();
             Selected = false;
             Players.Clear();
+            GeofenceMonitor.Current.Geofences.Clear();
             UpdateGamePlayers(null);
 
             App.Navigate(typeof(MatchView));
@@ -93,6 +113,24 @@ namespace YJMPD_UWP.Model
                     return;
                 }
             }
+        }
+
+        //Ending
+
+        public async Task<bool> End()
+        {
+            CalculateDistanceWalked();
+            Settings.Statistics.Matches += 1;
+
+            UpdateGameStatus(GameStatus.ENDED);
+
+            return true;
+        }
+
+        public async void CalculateDistanceWalked()
+        {
+            MapRoute r = await Util.FindWalkingRoute(App.Geo.History.Select(p => p.Coordinate.Point).ToList());
+            Settings.Statistics.Distance += r.LengthInMeters;
         }
 
         //Starting and Stopping

@@ -4,13 +4,11 @@ namespace YJMPD_UWP.Helpers.EventArgs
 {
     public class PositionUpdatedEventArgs : System.EventArgs
     {
-        public Geoposition Old { get; private set; }
-        public Geoposition New { get; private set; }
+        public Geoposition Position { get; private set; }
 
-        public PositionUpdatedEventArgs(Geoposition old, Geoposition notold)
+        public PositionUpdatedEventArgs(Geoposition pos)
         {
-            Old = old;
-            New = notold;
+            Position = pos;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace YJMPD_UWP.Model
 
         public bool? Connected { get; private set; }
 
+        private bool trackhistory = false;
         private List<Geoposition> _history;
         public List<Geoposition> History
         {
@@ -61,7 +62,13 @@ namespace YJMPD_UWP.Model
 
         public void ClearHistory()
         {
+            trackhistory = false;
             _history.Clear();
+        }
+
+        public void KeepHistory()
+        {
+            trackhistory = true;
         }
 
         public async Task<String> StartTracking()
@@ -124,15 +131,11 @@ namespace YJMPD_UWP.Model
 
         private void Geo_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
-            if (_history.Count > 0)
-                UpdatePosition(_history.Last(), args.Position);
-            else
-            {
-                _position = args.Position;
-                UpdatePosition(args.Position, args.Position);
-            }
 
-            _history.Add(args.Position);
+           UpdatePosition(args.Position);
+
+            if(trackhistory)
+                _history.Add(args.Position);
         }
 
         private void UpdateStatus(PositionStatus s)
@@ -144,13 +147,13 @@ namespace YJMPD_UWP.Model
             OnStatusUpdate(this, new PositionStatusUpdatedEventArgs(s));
         }
 
-        private void UpdatePosition(Geoposition old, Geoposition newp)
+        private void UpdatePosition(Geoposition pos)
         {
-            _position = newp;
+            _position = pos;
 
             if (OnPositionUpdate == null) return;
 
-            OnPositionUpdate(this, new PositionUpdatedEventArgs(old, newp));
+            OnPositionUpdate(this, new PositionUpdatedEventArgs(pos));
         }
     }
 }
