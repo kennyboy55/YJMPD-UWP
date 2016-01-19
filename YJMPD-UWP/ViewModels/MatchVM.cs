@@ -36,6 +36,7 @@ namespace YJMPD_UWP.ViewModels
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 NotifyPropertyChanged(nameof(MatchAvailable));
+                NotifyPropertyChanged(nameof(ConnectingServer));
             });
         }
 
@@ -44,6 +45,7 @@ namespace YJMPD_UWP.ViewModels
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 NotifyPropertyChanged(nameof(MatchAvailable));
+                NotifyPropertyChanged(nameof(ConnectingServer));
             });
         }
         
@@ -69,6 +71,14 @@ namespace YJMPD_UWP.ViewModels
             get
             {
                 return App.Geo.Status == Windows.Devices.Geolocation.PositionStatus.Ready && App.Network.Status == Model.NetworkHandler.NetworkStatus.CONNECTED;
+            }
+        }
+
+        public bool ConnectingServer
+        {
+            get
+            {
+                return !MatchAvailable;
             }
         }
 

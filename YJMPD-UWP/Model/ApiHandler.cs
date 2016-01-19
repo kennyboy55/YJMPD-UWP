@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YJMPD_UWP.Helpers;
+using YJMPD_UWP.Views;
 
 namespace YJMPD_UWP.Model
 {
@@ -49,7 +50,10 @@ namespace YJMPD_UWP.Model
                     {
                         Debug.WriteLine("Selected player taking picture");
                         App.Game.Selected = true;
+                        App.Navigate(typeof(PhotoView));
                     }
+                    else
+                        App.Navigate(typeof(WaitingView));
                     break;
                 default:
                     //Do nothing

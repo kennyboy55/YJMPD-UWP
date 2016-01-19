@@ -97,14 +97,8 @@ namespace YJMPD_UWP.Model
         private async Task<bool> StartGame()
         {
             UpdateGameStatus(GameStatus.SEARCHING);
+
             Search();
-            
-
-            UpdateGameStatus(GameStatus.WAITING);
-
-            await Task.Delay(TimeSpan.FromSeconds(5));
-
-            UpdateGameStatus(GameStatus.STARTED);
 
             return true;
         }
@@ -112,7 +106,6 @@ namespace YJMPD_UWP.Model
         private async Task<bool> StopGame()
         {
             Reset();
-            //Do stuff
 
             UpdateGameStatus(GameStatus.STOPPED);
             return true;
