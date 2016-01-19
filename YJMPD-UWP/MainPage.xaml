@@ -117,7 +117,7 @@
                             </StackPanel>
 
                             <StackPanel Style="{StaticResource GameInfoPanel}" HorizontalAlignment="Stretch">
-                                <Button Content="Back to Game" Tapped="BackToGame_Tapped" Style="{StaticResource Green}"/>
+                                <Button Content="Back to Game" Click="BackToGame_Click" Style="{StaticResource Green}"/>
                             </StackPanel>
                         </StackPanel>
                         

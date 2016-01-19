@@ -138,7 +138,7 @@ namespace YJMPD_UWP
             NavView.IsPaneOpen = false;
         }
 
-        private async void BackToGame_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void BackToGame_Click(object sender, RoutedEventArgs e)
         {
             bool b = await Util.ShowConfirmDialog("Not implemented", "", Util.DialogType.OKCANCEL);
         }

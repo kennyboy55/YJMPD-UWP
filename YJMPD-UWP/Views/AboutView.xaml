@@ -9,7 +9,42 @@
 
     <ScrollViewer>
         <StackPanel Style="{StaticResource Base}" >
+            <StackPanel>
+                <TextBlock Style="{StaticResource Header}" Text="About this app" />
+                <TextBlock>
+                    This application was developed as a school project for Avans Hogeschool.
+                </TextBlock>
+            </StackPanel>
 
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock Style="{StaticResource Header}" Text="About the creators" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Style="{StaticResource Subtext}" Grid.Row="0" Grid.Column="0" Text="Yorick Rommers" />
+                    <TextBlock Style="{StaticResource Subtext}" Grid.Row="1" Grid.Column="0" Text="Kenneth van Ewijk" />
+                    <TextBlock Style="{StaticResource Subtext}" Grid.Row="2" Grid.Column="0" Text="Janco Kock" />
+
+                    <Button Name="YorickGit" Click="YorickGit_Click" Grid.Row="0" Content="Github" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,5" />
+                    <Button Name="KennethGit" Click="KennethGit_Click" Grid.Row="1" Content="Github" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,5"/>
+                    <Button Name="JancoGit" Click="JancoGit_Click" Grid.Row="2" Content="Github" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,0,0,5"/>
+
+                    <Button Name="YorickSite" Click="YorickSite_Click" Grid.Row="0" Content="Website" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,0,0,5"/>
+                    <Button Name="KennethSite" Click="KennethSite_Click" Grid.Row="1" Content="Website" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,0,0,5"/>
+                    <Button Name="JancoSite" Click="JancoSite_Click" Grid.Row="2" Content="Website" Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,0,0,5"/>
+
+                </Grid>
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Page>
