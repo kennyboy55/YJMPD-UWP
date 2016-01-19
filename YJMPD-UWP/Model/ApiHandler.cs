@@ -21,7 +21,8 @@ namespace YJMPD_UWP.Model
             Picture,
             Msg,
             PlayerJoined,
-            PlayerRemoved
+            PlayerRemoved,
+            PictureUrl
         }
 
         public ApiHandler()
@@ -55,6 +56,9 @@ namespace YJMPD_UWP.Model
                         App.Navigate(typeof(WaitingView));
 
                     App.Game.MoveToWaiting();
+                    break;
+                case Command.PictureUrl:
+                    //Download picture from URL and display to participants
                     break;
                 default:
                     //Do nothing
