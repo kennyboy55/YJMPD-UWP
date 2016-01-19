@@ -54,6 +54,16 @@ namespace YJMPD_UWP.Model
             UpdateGamePlayers(p);
         }
 
+        public void RemovePlayer(string username)
+        {
+            Players.ForEach(p => {
+                if(p.Username == username)
+                {
+                    Players.Remove(p);
+                }
+            });
+        }
+
         public void Reset()
         {
             Players.Clear();

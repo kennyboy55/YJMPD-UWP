@@ -22,7 +22,8 @@ namespace YJMPD_UWP.Model
             Picture,
             Msg,
             GameFound,
-            PlayerJoined
+            PlayerJoined,
+            PlayerRemoved
         }
 
         public ApiHandler()
@@ -44,6 +45,10 @@ namespace YJMPD_UWP.Model
                     Debug.WriteLine("Played joined");
                     PlayerJoined(o[Command.PlayerJoined.ToString()].ToString());
                     break;
+                case Command.PlayerRemoved:
+                    Debug.WriteLine("Played removed");
+                    PlayerRemoved(o[Command.PlayerRemoved.ToString()].ToString());
+                    break;
                 case Command.Picture:
                     if (o["selected"].ToObject<bool>() == true)
                     {
@@ -62,6 +67,12 @@ namespace YJMPD_UWP.Model
         {
             //Event will be handled by the game manager
             App.Game.AddPlayer(username);
+        }
+
+        private void PlayerRemoved(string username)
+        {
+            //Event will be handled by the game manager
+            App.Game.RemovePlayer(username);
         }
 
         private void GameFound()
