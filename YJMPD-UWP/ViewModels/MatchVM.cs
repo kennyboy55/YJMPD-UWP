@@ -62,7 +62,10 @@ namespace YJMPD_UWP.ViewModels
         {
             get
             {
-                return "There are currently " + App.Game.Players.Count + " players in the match.";
+                if (App.Game.Players.Count == 1)
+                    return "There is currently " + App.Game.Players.Count + " player in the match.";
+                else
+                    return "There are currently " + App.Game.Players.Count + " players in the match.";
             }
         }
 

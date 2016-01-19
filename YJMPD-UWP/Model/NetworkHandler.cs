@@ -49,6 +49,9 @@ namespace YJMPD_UWP.Model
 
         public async Task<bool> Write(string data)
         {
+            if (client.InputStream == null || client.OutputStream == null)
+                return false;
+
             dout.WriteString(data + Environment.NewLine);
             await dout.StoreAsync();
             await dout.FlushAsync();
@@ -86,9 +89,18 @@ namespace YJMPD_UWP.Model
                 while (workItem.Status != AsyncStatus.Canceled)
                 {
                     Debug.WriteLine("Awaiting incoming data...");
-                    string data = await App.Network.Read();
-                    App.Network.HandleMessage(data);
-                    await Task.Delay(TimeSpan.FromMilliseconds(50));
+
+                    if(client.InputStream != null && client.OutputStream != null)
+                    {
+                        string data = await Read();
+                        HandleMessage(data);
+                        await Task.Delay(TimeSpan.FromMilliseconds(50));
+                    }
+                    else
+                    {
+                        Disconnect();
+                        workItem.Cancel();
+                    }
                 }
             });
 
@@ -98,7 +110,7 @@ namespace YJMPD_UWP.Model
         public async Task<bool> Disconnect()
         {
             if(App.Game.Status != GameHandler.GameStatus.STOPPED)
-                App.Api.LeaveGame();
+                await App.Api.LeaveGame();
 
             UpdateNetworkStatus(NetworkStatus.DISCONNECTED);
 
