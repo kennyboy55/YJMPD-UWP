@@ -20,5 +20,13 @@ namespace YJMPD_UWP.ViewModels
                 Settings.Username = value;
             }
         }
+
+        public bool UsernameEnabled
+        {
+            get
+            {
+                return App.Game.Status == Model.GameHandler.GameStatus.STOPPED;
+            }
+        }
     }
 }

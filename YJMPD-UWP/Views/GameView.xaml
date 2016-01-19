@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="YJMPD_UWP.Views.SettingsView"
+    x:Class="YJMPD_UWP.Views.GameView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:YJMPD_UWP.Views"
@@ -8,11 +8,8 @@
     mc:Ignorable="d">
 
     <ScrollViewer>
-        <StackPanel Style="{StaticResource BaseStackPanel}" >
-            <StackPanel>
-                <TextBlock Text="Username" Style="{StaticResource Header}" />
-                <TextBox Text="{Binding Username, Mode=TwoWay}" IsEnabled="{Binding UsernameEnabled}"/>
-            </StackPanel>
+        <StackPanel Style="{StaticResource BaseStackPanel}">
+
         </StackPanel>
     </ScrollViewer>
 </Page>

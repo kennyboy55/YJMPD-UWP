@@ -13,11 +13,11 @@
     </Page.Resources>
     
     <ScrollViewer>
-        <StackPanel Style="{StaticResource Base}" >
+        <StackPanel Style="{StaticResource BaseStackPanel}" >
             <StackPanel>
                 <TextBlock Text="Start a match" Style="{StaticResource Header}" />
-                <Button Content="Start match" Style="{StaticResource Green}" Tapped="StartMatchButton_Tapped" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
-                <Button Content="Leave match" Style="{StaticResource Red}" Tapped="StopMatchButton_Tapped" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
+                <Button Content="Start match" Style="{StaticResource Green}" Click="StartMatchButton_Click" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
+                <Button Content="Leave match" Style="{StaticResource Red}" Click="StopMatchButton_Click" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
             </StackPanel>
 
             <StackPanel Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" Margin="0,10,0,0">
