@@ -60,8 +60,11 @@ namespace YJMPD_UWP.Model
                 if(p.Username == username)
                 {
                     Players.Remove(p);
+                    UpdateGamePlayers(p);
+                    return;
                 }
             });
+            
         }
 
         public void Reset()
