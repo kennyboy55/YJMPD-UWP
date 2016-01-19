@@ -46,7 +46,6 @@ namespace YJMPD_UWP.Model
 
             if (photo == null)
             {
-                // User cancelled photo capture
                 return;
             }
 

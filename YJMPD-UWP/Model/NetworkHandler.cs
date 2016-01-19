@@ -44,12 +44,15 @@ namespace YJMPD_UWP.Model
 
         private async Task<string> Read()
         {
+            if (Status != NetworkStatus.CONNECTED)
+                return "error";
+
             return await din.ReadLineAsync();
         }
 
         public async Task<bool> Write(string data)
         {
-            if (client.InputStream == null || client.OutputStream == null)
+            if (Status != NetworkStatus.CONNECTED)
                 return false;
 
             dout.WriteString(data + Environment.NewLine);
@@ -86,20 +89,30 @@ namespace YJMPD_UWP.Model
 
             BackgroundReader = Windows.System.Threading.ThreadPool.RunAsync(async (workItem) =>
             {
-                while (workItem.Status != AsyncStatus.Canceled)
-                {
-                    Debug.WriteLine("Awaiting incoming data...");
+                bool running = true;
 
-                    if(client.InputStream != null && client.OutputStream != null)
+                while (running)
+                {
+                    Debug.WriteLine("Awaiting incoming data... " + workItem.Status.ToString());
+
+                    string data = "";
+
+                    try
                     {
-                        string data = await Read();
-                        HandleMessage(data);
-                        await Task.Delay(TimeSpan.FromMilliseconds(50));
+                        data = await Read();
                     }
-                    else
+                    catch (Exception)
+                    {
+                        data = null;
+                    }
+
+                    if (data == null)
                     {
                         Disconnect();
-                        workItem.Cancel();
+                        running = false;
+                    }
+                    else {
+                        HandleMessage(data);
                     }
                 }
             });
@@ -109,19 +122,25 @@ namespace YJMPD_UWP.Model
 
         public async Task<bool> Disconnect()
         {
-            if(App.Game.Status != GameHandler.GameStatus.STOPPED)
-                await App.Api.LeaveGame();
+            Debug.WriteLine("Disconnecting...");
+
+            if (App.Game.Status != GameHandler.GameStatus.STOPPED)
+                await App.Game.Stop();
 
             UpdateNetworkStatus(NetworkStatus.DISCONNECTED);
 
             if (BackgroundReader != null)
+            {
                 BackgroundReader.Cancel();
+                BackgroundReader = null;
+            }
 
             din.Dispose();
             dout.Dispose();
 
             client.Dispose();
 
+            Debug.WriteLine("Disconnected...");
             return true;
         }
 

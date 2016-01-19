@@ -78,6 +78,8 @@ namespace YJMPD_UWP.Model
             Selected = false;
             Players.Clear();
             UpdateGamePlayers(null);
+
+            App.Navigate(typeof(MatchView));
         }
 
         public void UpdatePlayer(string username, double pointstotal, double points)
