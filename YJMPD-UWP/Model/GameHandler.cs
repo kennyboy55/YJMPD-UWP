@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YJMPD_UWP.Helpers.EventArgs;
 using YJMPD_UWP.Model.Object;
+using YJMPD_UWP.Views;
 
 namespace YJMPD_UWP.Model
 {
@@ -123,6 +124,29 @@ namespace YJMPD_UWP.Model
 
             UpdateGameStatus(GameStatus.STOPPED);
             return true;
+        }
+
+
+        public void BackToGame()
+        {
+            switch(Status)
+            {
+                default:
+                case GameStatus.STOPPED:
+                    break;
+                case GameStatus.SEARCHING:
+                    App.Navigate(typeof(MatchView));
+                    break;
+                case GameStatus.WAITING:
+                    App.Navigate(typeof(WaitingView));
+                    break;
+                case GameStatus.STARTED:
+                    App.Navigate(typeof(GameView));
+                    break;
+                case GameStatus.ENDED:
+                    App.Navigate(typeof(ScoreView));
+                    break;
+            }
         }
     }
 }

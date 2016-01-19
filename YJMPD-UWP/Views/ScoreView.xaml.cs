@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -29,8 +30,17 @@ namespace YJMPD_UWP.Views
 
         private void ReadyButton_Click(object sender, RoutedEventArgs e)
         {
+            Ready();
+        }
+
+        private async void Ready()
+        {
             ReadyCheck.Visibility = Visibility.Visible;
             ReadyButton.IsEnabled = false;
+
+            Task.Delay(TimeSpan.FromMilliseconds(1500));
+
+            App.Navigate(typeof(WaitingView));
         }
     }
 }

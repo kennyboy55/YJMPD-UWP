@@ -121,7 +121,11 @@ namespace YJMPD_UWP
             NavView.IsPaneOpen = false;
 
             if (NavListHome.IsSelected)
+            {
+                if (Frame.BackStack.Count >= 1)
+                    Frame.BackStack.Clear();
                 Frame.Navigate(typeof(MatchView));
+            }
             else
             if (NavListStatistics.IsSelected)
                 Frame.Navigate(typeof(StatisticsView));
@@ -138,13 +142,10 @@ namespace YJMPD_UWP
             NavView.IsPaneOpen = false;
         }
 
-        private async void BackToGame_Click(object sender, RoutedEventArgs e)
+        private void BackToGame_Click(object sender, RoutedEventArgs e)
         {
-            bool b = await Util.ShowConfirmDialog("View Scores", "Go to the scores page (test)?", Util.DialogType.OKCANCEL);
-            if(b)
-            {
-                App.Navigate(typeof(ScoreView));
-            }
+            NavView.IsPaneOpen = false;
+            App.Game.BackToGame();
         }
 
         private void Content_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
