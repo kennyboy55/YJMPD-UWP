@@ -54,6 +54,11 @@ namespace YJMPD_UWP.Model
             UpdateGamePlayers(p);
         }
 
+        public void MoveToWaiting()
+        {
+            UpdateGameStatus(GameStatus.WAITING);
+        }
+
         public void RemovePlayer(string username)
         {
             for(int i=Players.Count-1; i>=0; i--)
@@ -69,6 +74,8 @@ namespace YJMPD_UWP.Model
 
         public void Reset()
         {
+            App.Photo.Reset();
+            Selected = false;
             Players.Clear();
             UpdateGamePlayers(null);
         }
@@ -126,7 +133,10 @@ namespace YJMPD_UWP.Model
                     App.Navigate(typeof(MatchView));
                     break;
                 case GameStatus.WAITING:
-                    App.Navigate(typeof(WaitingView));
+                    if (Selected)
+                        App.Navigate(typeof(PhotoView));
+                    else
+                        App.Navigate(typeof(WaitingView));
                     break;
                 case GameStatus.STARTED:
                     if (Selected && App.Photo.Photo == null)

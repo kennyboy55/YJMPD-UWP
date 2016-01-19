@@ -13,8 +13,6 @@ namespace YJMPD_UWP.Model
 {
     public class ApiHandler
     {
-        public delegate void OnGameFoundHandler(object sender, EventArgs e);
-        public event OnGameFoundHandler OnGameFound;
 
         public enum Command
         {
@@ -22,7 +20,6 @@ namespace YJMPD_UWP.Model
             Name,
             Picture,
             Msg,
-            GameFound,
             PlayerJoined,
             PlayerRemoved
         }
@@ -39,9 +36,6 @@ namespace YJMPD_UWP.Model
 
             switch (c)
             {
-                case Command.GameFound:
-                    GameFound();
-                    break;
                 case Command.PlayerJoined:
                     Debug.WriteLine("Played joined");
                     PlayerJoined(o[Command.PlayerJoined.ToString()].ToString());
@@ -59,6 +53,8 @@ namespace YJMPD_UWP.Model
                     }
                     else
                         App.Navigate(typeof(WaitingView));
+
+                    App.Game.MoveToWaiting();
                     break;
                 default:
                     //Do nothing
@@ -77,14 +73,6 @@ namespace YJMPD_UWP.Model
         {
             //Event will be handled by the game manager
             App.Game.RemovePlayer(username);
-        }
-
-        private void GameFound()
-        {
-            throw new NotImplementedException();
-            if (OnGameFound == null) return;
-
-            OnGameFound(this, new EventArgs());
         }
 
         public JObject Message(Command c, string msg)

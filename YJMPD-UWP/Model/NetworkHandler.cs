@@ -95,8 +95,11 @@ namespace YJMPD_UWP.Model
             return true;
         }
 
-        private async Task<bool> Disconnect()
+        public async Task<bool> Disconnect()
         {
+            if(App.Game.Status != GameHandler.GameStatus.STOPPED)
+                App.Api.LeaveGame();
+
             UpdateNetworkStatus(NetworkStatus.DISCONNECTED);
 
             if (BackgroundReader != null)

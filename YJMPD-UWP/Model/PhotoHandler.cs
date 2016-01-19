@@ -21,6 +21,11 @@ namespace YJMPD_UWP.Model
 
         }
 
+        public void Reset()
+        {
+            Photo = null;
+        }
+
         private void UpdatePhotoTaken(SoftwareBitmapSource photo)
         {
             Photo = photo;
