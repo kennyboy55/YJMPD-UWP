@@ -5,11 +5,23 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using YJMPD_UWP.Helpers;
 using YJMPD_UWP.Helpers.EventArgs;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using System.IO;
 
 namespace YJMPD_UWP.Model
 {
     public class NetworkHandler
     {
+
+        public enum Commands
+        {
+            Hi,
+            Name,
+            Picture
+        }
+
         public delegate void OnStatusUpdatedHandler(object sender, NetworkStatusUpdatedEventArgs e);
         public event OnStatusUpdatedHandler OnStatusUpdate;
 
@@ -18,7 +30,7 @@ namespace YJMPD_UWP.Model
 
         private StreamSocket client;
         DataWriter dout;
-        DataReader din;
+        StreamReader din;
 
         private void UpdateNetworkStatus(NetworkStatus status)
         {
@@ -37,11 +49,44 @@ namespace YJMPD_UWP.Model
 
 
         //API stuff
-        public async Task<bool> SearchGame()
+        public async Task<bool> SearchGame(GameHandler g, string playername)
         {
-            Random r = new Random();
-            int l = r.Next(0, 2);
-            return l < 1;
+            JObject obj = JObject.FromObject(new
+            {
+                command = Commands.Name.ToString(),
+                name = playername
+            });
+            Debug.WriteLine(obj.ToString(Formatting.None));
+            Write(obj.ToString(Formatting.None));
+
+            var response = await Read();
+            Debug.WriteLine(response);
+            JObject o = JObject.Parse(response);
+            if(o["msg"].ToString() == "ok")
+            {
+                g.AddPlayer(playername);
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> WaitingForPlayers(GameHandler g)
+        {
+            bool added = false;
+
+            var response = await Read();
+            Debug.WriteLine(response);
+            JObject o = JObject.Parse(response);
+            try {
+                g.AddPlayer(o["player"].ToString());
+                added = true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            return added;
         }
 
 
@@ -58,17 +103,13 @@ namespace YJMPD_UWP.Model
 
         private async Task<string> ReadData()
         {
-            uint length = din.ReadUInt32();
-            string data = din.ReadString(length);
-
-            return data;
+            return din.ReadLine();
         }
 
         private async Task<bool> WriteData(string data)
         {
-            dout.WriteUInt32((uint)data.Length);
-            dout.WriteString(data);
-
+            dout.WriteString(data + Environment.NewLine);
+            await dout.StoreAsync();
             await dout.FlushAsync();
             
             return true;
@@ -91,21 +132,20 @@ namespace YJMPD_UWP.Model
             UpdateNetworkStatus(NetworkStatus.CONNECTING);
 
             UpdateNetworkStatus(NetworkStatus.CONNECTED);
-            return false;
 
             client = new StreamSocket();
 
             StreamSocketControl controller = client.Control;
             controller.KeepAlive = true;
 
-            await client.ConnectAsync(new HostName(Settings.Values["hostname"] as string), "YJMPD-UWP-Server");
+            await client.ConnectAsync(new HostName("imegumii.space"), "3333");
 
 
-            din = new DataReader(client.InputStream);
+            din = new StreamReader(client.InputStream.AsStreamForRead());
             dout = new DataWriter(client.OutputStream);
 
-            din.UnicodeEncoding = UnicodeEncoding.Utf8;
-            din.ByteOrder = ByteOrder.LittleEndian;
+            //din.UnicodeEncoding = UnicodeEncoding.Utf8;
+            //din.ByteOrder = ByteOrder.LittleEndian;
 
             dout.UnicodeEncoding = UnicodeEncoding.Utf8;
             dout.ByteOrder = ByteOrder.LittleEndian;

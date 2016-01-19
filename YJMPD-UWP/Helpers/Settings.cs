@@ -14,6 +14,7 @@ namespace YJMPD_UWP.Helpers
         {
             //Define default settings here
             Values["hostname"] = "imegumii.space";
+            Values["port"] = "3333";
 
             if (Values["username"] == null)
                 Values["username"] = "Anon_" + Util.Random(5, Util.RandomType.ALPHANUMERIC);
