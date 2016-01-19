@@ -24,7 +24,7 @@ namespace YJMPD_UWP.Model
 
         public List<Player> Players { get; private set; }
 
-        public bool Selected { get; private set; }
+        public bool Selected { get; set; }
 
         private void UpdateGameStatus(GameStatus status)
         {

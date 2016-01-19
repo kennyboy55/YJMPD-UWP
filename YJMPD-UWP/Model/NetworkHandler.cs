@@ -112,7 +112,6 @@ namespace YJMPD_UWP.Model
 
         public void HandleMessage(string data)
         {
-            Debug.WriteLine(data);
             JObject o = JObject.Parse(data);
             App.Api.HandleMessage(o);
             

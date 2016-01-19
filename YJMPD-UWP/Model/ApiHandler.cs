@@ -32,10 +32,10 @@ namespace YJMPD_UWP.Model
 
         public void HandleMessage(JObject o)
         {
-            Debug.WriteLine("Reached HandleMessage in API");
+            Debug.WriteLine(o.ToString());
             Command c = (Command)Enum.Parse(typeof(Command), o["command"].ToString());
 
-            switch(c)
+            switch (c)
             {
                 case Command.GameFound:
                     GameFound();
@@ -43,6 +43,13 @@ namespace YJMPD_UWP.Model
                 case Command.PlayerJoined:
                     Debug.WriteLine("Played joined");
                     PlayerJoined(o[Command.PlayerJoined.ToString()].ToString());
+                    break;
+                case Command.Picture:
+                    if (o["selected"].ToObject<bool>() == true)
+                    {
+                        Debug.WriteLine("Selected player taking picture");
+                        App.Game.Selected = true;
+                    }
                     break;
                 default:
                     //Do nothing
