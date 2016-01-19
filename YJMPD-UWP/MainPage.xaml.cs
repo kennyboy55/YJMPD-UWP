@@ -105,7 +105,6 @@ namespace YJMPD_UWP
                     NavList.SelectedIndex = 3;
                     break;
                 default:
-                    PageTitle.Text = "YJMPD-UWP";
                     break;
             }
 

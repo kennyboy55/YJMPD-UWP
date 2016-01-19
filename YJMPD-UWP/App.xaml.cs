@@ -9,6 +9,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Windows.ApplicationModel.Core;
 
 namespace YJMPD_UWP
 {
@@ -134,13 +135,44 @@ namespace YJMPD_UWP
         public static bool Navigate(Type type)
         {
             App.Geo.TryConnectIfNull();
-            return ContentFrame.Navigate(type);
+
+            if(Window.Current == null)
+            {
+               CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                    CoreDispatcherPriority.High,
+                    new DispatchedHandler(() =>
+                    {
+                        ContentFrame.Navigate(type);
+                    }));
+
+                return true;
+            }
+            else
+            {
+                return ContentFrame.Navigate(type);
+            }
+            
         }
 
         public static bool Navigate(Type type, object param)
         {
             App.Geo.TryConnectIfNull();
-            return ContentFrame.Navigate(type, param);
+
+            if (Window.Current == null)
+            {
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                     CoreDispatcherPriority.High,
+                     new DispatchedHandler(() =>
+                     {
+                         ContentFrame.Navigate(type, param);
+                     }));
+
+                return true;
+            }
+            else
+            {
+                return ContentFrame.Navigate(type, param);
+            }
         }
 
 
