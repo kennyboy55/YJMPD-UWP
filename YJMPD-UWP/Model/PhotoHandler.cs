@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
@@ -60,7 +63,44 @@ namespace YJMPD_UWP.Model
             SoftwareBitmapSource bitmapSource = new SoftwareBitmapSource();
             await bitmapSource.SetBitmapAsync(softwareBitmapBGR8);
 
+            await UploadImage(stream.AsStream());
+
             UpdatePhotoTaken(bitmapSource);
+        }
+
+        public async Task<string> UploadImage(Stream file)
+        {
+            string url = "http://jancokock.me/f/?plain";
+            MultipartFormDataContent postdata = new MultipartFormDataContent();
+            postdata.Add(new ByteArrayContent(ReadFully(file)), "file", "capture.png");
+            using (HttpClient hc = new HttpClient())
+            {
+                try
+                {
+                    var response = await hc.PostAsync(url, postdata);
+                    response.EnsureSuccessStatusCode();
+                    Debug.WriteLine(await response.Content.ReadAsStringAsync());
+                    return await response.Content.ReadAsStringAsync();
+                }
+                catch
+                {
+                    throw new IOException("Network error");
+                }
+            }
+        }
+
+        public byte[] ReadFully(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
         }
     }
 }

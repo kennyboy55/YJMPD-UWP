@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
 using Windows.Foundation;
+using System.Net.Http;
+using System.Text;
+using Windows.Storage;
 
 namespace YJMPD_UWP.Model
 {
@@ -82,7 +85,7 @@ namespace YJMPD_UWP.Model
             //din.UnicodeEncoding = UnicodeEncoding.Utf8;
             //din.ByteOrder = ByteOrder.LittleEndian;
 
-            dout.UnicodeEncoding = UnicodeEncoding.Utf8;
+            dout.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
             dout.ByteOrder = ByteOrder.LittleEndian;
 
             UpdateNetworkStatus(NetworkStatus.CONNECTED);
@@ -150,5 +153,6 @@ namespace YJMPD_UWP.Model
             App.Api.HandleMessage(o);
             
         }
+
     }
 }
