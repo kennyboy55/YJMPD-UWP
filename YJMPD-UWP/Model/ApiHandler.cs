@@ -21,7 +21,8 @@ namespace YJMPD_UWP.Model
             Picture,
             Msg,
             PlayerJoined,
-            PlayerRemoved
+            PlayerRemoved,
+            PictureUrl
         }
 
         public ApiHandler()
