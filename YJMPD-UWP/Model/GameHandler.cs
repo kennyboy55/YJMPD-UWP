@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Windows.Foundation;
+using Windows.UI.Xaml.Media.Imaging;
 using YJMPD_UWP.Helpers;
 using YJMPD_UWP.Helpers.EventArgs;
 using YJMPD_UWP.Model.Object;
@@ -22,6 +21,8 @@ namespace YJMPD_UWP.Model
         public GameStatus Status { get; private set; }
 
         public List<Player> Players { get; private set; }
+
+        public bool Selected { get; private set; }
 
         private void UpdateGameStatus(GameStatus status)
         {
@@ -95,7 +96,7 @@ namespace YJMPD_UWP.Model
         {
 
             //Do stuff
-
+            /*
             UpdateGameStatus(GameStatus.SEARCHING);
             Search();
 
@@ -108,11 +109,12 @@ namespace YJMPD_UWP.Model
                     Debug.WriteLine("Searching");
                     Task.Delay(TimeSpan.FromMilliseconds(50));
                 }
-            });
+            });*/
             
 
             UpdateGameStatus(GameStatus.WAITING);
 
+            await Task.Delay(TimeSpan.FromSeconds(5));
 
             UpdateGameStatus(GameStatus.STARTED);
 
@@ -143,7 +145,10 @@ namespace YJMPD_UWP.Model
                     App.Navigate(typeof(WaitingView));
                     break;
                 case GameStatus.STARTED:
-                    App.Navigate(typeof(GameView));
+                    if (Selected && App.Photo.Photo == null)
+                        App.Navigate(typeof(PhotoView));
+                    else
+                        App.Navigate(typeof(GameView));
                     break;
                 case GameStatus.ENDED:
                     App.Navigate(typeof(ScoreView));

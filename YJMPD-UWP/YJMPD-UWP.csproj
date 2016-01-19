@@ -100,6 +100,7 @@
     <Compile Include="Helpers\EventArgs\GameStatusUpdatedEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\HeadingUpdatedEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\NetworkStatusUpdatedEventArgs.cs" />
+    <Compile Include="Helpers\EventArgs\PhotoTakenEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\PositionStatusUpdatedEventArgs.cs" />
     <Compile Include="Helpers\EventArgs\PositionUpdatedEventArgs.cs" />
     <Compile Include="Helpers\Extensions.cs" />

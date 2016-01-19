@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Windows.Data.Xml.Dom;
 using Windows.Devices.Geolocation;
 using Windows.Services.Maps;
-using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
-using Windows.UI.Xaml.Controls.Maps;
 
 namespace YJMPD_UWP.Helpers
 {

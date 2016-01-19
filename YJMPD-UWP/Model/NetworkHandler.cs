@@ -138,7 +138,7 @@ namespace YJMPD_UWP.Model
             StreamSocketControl controller = client.Control;
             controller.KeepAlive = true;
 
-            await client.ConnectAsync(new HostName("imegumii.space"), "3333");
+            await client.ConnectAsync(new HostName(Settings.Values["hostname"] as string), Settings.Values["port"] as string);
 
 
             din = new StreamReader(client.InputStream.AsStreamForRead());

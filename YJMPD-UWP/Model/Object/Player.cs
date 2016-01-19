@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YJMPD_UWP.Model.Object
+﻿namespace YJMPD_UWP.Model.Object
 {
     public class Player
     {

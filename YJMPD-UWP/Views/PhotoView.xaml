@@ -3,13 +3,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:YJMPD_UWP.Views"
+    xmlns:convert="using:YJMPD_UWP.Helpers.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <convert:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Page.Resources>
+    
     <ScrollViewer>
-        <StackPanel Style="{StaticResource BaseStackPanel}">
-            
-        </StackPanel>
+        <Grid Style="{StaticResource BaseGrid}">
+            <Image Name="Photo" Stretch="UniformToFill" Source="{Binding Photo}" Visibility="{Binding PhotoVisible, Converter={StaticResource BoolToVisConverter}}"/>
+            <StackPanel Visibility="{Binding ControlsVisible, Converter={StaticResource BoolToVisConverter}}">
+                <TextBlock Text="{Binding TimeOut}" />
+                <Button Content="Take Photo" Style="{StaticResource Green}" Click="PhotoButton_Click" />
+            </StackPanel>
+        </Grid>
     </ScrollViewer>
 </Page>

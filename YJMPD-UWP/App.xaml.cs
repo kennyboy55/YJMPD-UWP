@@ -9,7 +9,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using YJMPD_UWP.Helpers;
 
 namespace YJMPD_UWP
 {
@@ -59,6 +58,15 @@ namespace YJMPD_UWP
             }
         }
 
+        private static PhotoHandler photohandler = new PhotoHandler();
+
+        public static PhotoHandler Photo
+        {
+            get
+            {
+                return photohandler;
+            }
+        }
 
         // =========================
         // STATIC HELPER FUNCTIONS

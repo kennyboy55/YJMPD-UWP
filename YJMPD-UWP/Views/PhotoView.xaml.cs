@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Media.Imaging;
 using YJMPD_UWP.ViewModels;
 
 namespace YJMPD_UWP.Views
@@ -25,6 +15,11 @@ namespace YJMPD_UWP.Views
             photovm = new PhotoVM();
             this.DataContext = photovm;
             this.InitializeComponent();
+        }
+
+        private void PhotoButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.Photo.Take();
         }
     }
 }
