@@ -11,31 +11,43 @@
     <Page.Resources>
         <convert:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
     </Page.Resources>
-    
-    <ScrollViewer>
-        <StackPanel Style="{StaticResource BaseStackPanel}" >
-            <StackPanel>
-                <TextBlock Text="Start a match" Style="{StaticResource Header}" />
-                <Button Content="Start match" Style="{StaticResource Green}" Click="StartMatchButton_Click" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
-                <Button Content="Leave match" Style="{StaticResource Red}" Click="StopMatchButton_Click" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Style="{StaticResource BaseStackPanel}" >
+                <StackPanel>
+                    <TextBlock Text="Start a match" Style="{StaticResource Header}" />
+                    <Button Content="Start match" Style="{StaticResource Green}" Click="StartMatchButton_Click" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
+                    <Button Content="Leave match" Style="{StaticResource Red}" Click="StopMatchButton_Click" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
+                </StackPanel>
+
+                <StackPanel Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" Margin="0,10,0,0">
+                    <TextBlock Text="Current players in match" Style="{StaticResource Header}" />
+
+                    <TextBlock Text="{Binding PlayersCount}" />
+
+                    <ListView x:Name="PlayersList" ItemsSource="{Binding Players}" SelectionMode="None" IsTapEnabled="False">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:Name="ListViewDataTemplate">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Username}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </StackPanel>
             </StackPanel>
+        </ScrollViewer>
 
-            <StackPanel Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" Margin="0,10,0,0">
-                <TextBlock Text="Current players in match" Style="{StaticResource Header}" />
-
-                <TextBlock Text="{Binding PlayersCount}" />
-
-                <ListView x:Name="PlayersList" ItemsSource="{Binding Players}" SelectionMode="None" IsTapEnabled="False">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:Name="ListViewDataTemplate">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Username}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                
-            </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Visibility="{Binding ConnectingServer, Converter={StaticResource BoolToVisConverter}}" Padding="20" Background="Gray">
+            <ProgressRing Width="20" Height="20" IsActive="True" Margin="0,0,10,0" Foreground="White"/>
+            <TextBlock Text="Waiting on server..." Foreground="White" />
         </StackPanel>
-    </ScrollViewer>
+    </Grid>
 </Page>

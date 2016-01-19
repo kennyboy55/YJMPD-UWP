@@ -83,7 +83,7 @@ namespace YJMPD_UWP.Model
 
             BackgroundReader = Windows.System.Threading.ThreadPool.RunAsync(async (workItem) =>
             {
-                while (true)
+                while (workItem.Status != AsyncStatus.Canceled)
                 {
                     Debug.WriteLine("Awaiting incoming data...");
                     string data = await App.Network.Read();
