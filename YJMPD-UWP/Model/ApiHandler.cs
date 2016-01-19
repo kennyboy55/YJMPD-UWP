@@ -20,6 +20,7 @@ namespace YJMPD_UWP.Model
             Hi,
             Name,
             Picture,
+            Msg,
             GameFound,
             PlayerJoined
         }
@@ -31,6 +32,7 @@ namespace YJMPD_UWP.Model
 
         public void HandleMessage(JObject o)
         {
+            Debug.WriteLine("Reached HandleMessage in API");
             Command c = (Command)Enum.Parse(typeof(Command), o["command"].ToString());
 
             switch(c)
@@ -39,7 +41,8 @@ namespace YJMPD_UWP.Model
                     GameFound();
                     break;
                 case Command.PlayerJoined:
-                    PlayerJoined(o["msg"].ToString());
+                    Debug.WriteLine("Played joined");
+                    PlayerJoined(o[Command.PlayerJoined.ToString()].ToString());
                     break;
                 default:
                     //Do nothing
@@ -50,7 +53,6 @@ namespace YJMPD_UWP.Model
 
         private void PlayerJoined(string username)
         {
-            throw new NotImplementedException();
             //Event will be handled by the game manager
             App.Game.AddPlayer(username);
         }

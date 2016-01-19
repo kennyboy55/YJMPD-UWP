@@ -83,12 +83,12 @@ namespace YJMPD_UWP.Model
 
             BackgroundReader = Windows.System.Threading.ThreadPool.RunAsync(async (workItem) =>
             {
-                while (workItem.Status == AsyncStatus.Started)
+                while (true)
                 {
                     Debug.WriteLine("Awaiting incoming data...");
                     string data = await App.Network.Read();
                     App.Network.HandleMessage(data);
-                    Task.Delay(TimeSpan.FromMilliseconds(50));
+                    await Task.Delay(TimeSpan.FromMilliseconds(50));
                 }
             });
 
@@ -114,10 +114,8 @@ namespace YJMPD_UWP.Model
         {
             Debug.WriteLine(data);
             JObject o = JObject.Parse(data);
-            if (o["msg"].ToString() == "ok")
-            {
-                App.Api.HandleMessage(o);
-            }
+            App.Api.HandleMessage(o);
+            
         }
     }
 }
