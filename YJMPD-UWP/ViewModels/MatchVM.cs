@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using YJMPD_UWP.Model.Object;
 
 namespace YJMPD_UWP.ViewModels
@@ -36,7 +37,8 @@ namespace YJMPD_UWP.ViewModels
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 NotifyPropertyChanged(nameof(MatchAvailable));
-                NotifyPropertyChanged(nameof(ConnectingServer));
+                NotifyPropertyChanged(nameof(ServerAvailable));
+                NotifyPropertyChanged(nameof(ServerMessage));
             });
         }
 
@@ -45,7 +47,8 @@ namespace YJMPD_UWP.ViewModels
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 NotifyPropertyChanged(nameof(MatchAvailable));
-                NotifyPropertyChanged(nameof(ConnectingServer));
+                NotifyPropertyChanged(nameof(ServerAvailable));
+                NotifyPropertyChanged(nameof(ServerMessage));
             });
         }
         
@@ -77,11 +80,47 @@ namespace YJMPD_UWP.ViewModels
             }
         }
 
-        public bool ConnectingServer
+        public bool ServerAvailable
         {
             get
             {
                 return !MatchAvailable;
+            }
+        }
+
+        public string ServerMessage
+        {
+            get
+            {
+                string str = "";
+
+                switch (App.Network.Status)
+                {
+                    case Model.NetworkHandler.NetworkStatus.DISCONNECTED:
+                        str = "Disconnected";
+                        break;
+                    case Model.NetworkHandler.NetworkStatus.CONNECTING:
+                        str = "Connecting to server...";
+                        break;
+                }
+
+                switch(App.Geo.Status)
+                {
+                    case Windows.Devices.Geolocation.PositionStatus.Disabled:
+                    case Windows.Devices.Geolocation.PositionStatus.NotAvailable:
+                    case Windows.Devices.Geolocation.PositionStatus.NoData:
+                        str = "GPS not available";
+                        break;
+                    case Windows.Devices.Geolocation.PositionStatus.NotInitialized:
+                    case Windows.Devices.Geolocation.PositionStatus.Initializing:
+                        str = "Waiting on GPS...";
+                        break;
+                }
+
+                if (str == "")
+                    str = "Connected";
+
+                return str;
             }
         }
 

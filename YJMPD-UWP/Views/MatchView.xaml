@@ -45,9 +45,9 @@
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Visibility="{Binding ConnectingServer, Converter={StaticResource BoolToVisConverter}}" Padding="20" Background="Gray">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Visibility="{Binding ServerAvailable, Converter={StaticResource BoolToVisConverter}}" Padding="20" Background="Gray">
             <ProgressRing Width="20" Height="20" IsActive="True" Margin="0,0,10,0" Foreground="White"/>
-            <TextBlock Text="Waiting on server..." Foreground="White" />
+            <TextBlock Text="{Binding ServerMessage}" Foreground="White" />
         </StackPanel>
     </Grid>
 </Page>
