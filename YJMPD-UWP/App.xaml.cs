@@ -48,6 +48,16 @@ namespace YJMPD_UWP
             }
         }
 
+        private static ApiHandler apihandler = new ApiHandler();
+
+        public static ApiHandler Api
+        {
+            get
+            {
+                return apihandler;
+            }
+        }
+
         private static GameHandler gamehandler = new GameHandler();
 
         public static GameHandler Game

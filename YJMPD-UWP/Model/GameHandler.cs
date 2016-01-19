@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml.Media.Imaging;
 using YJMPD_UWP.Helpers;
 using YJMPD_UWP.Helpers.EventArgs;
@@ -77,7 +79,7 @@ namespace YJMPD_UWP.Model
         public async Task<bool> Search()
         {
             UpdateGameStatus(GameStatus.SEARCHING);
-            return await App.Network.SearchGame(this, Settings.Username);
+            return await App.Api.SearchGame();
         }
 
         //Starting and Stopping
@@ -94,22 +96,8 @@ namespace YJMPD_UWP.Model
 
         private async Task<bool> StartGame()
         {
-
-            //Do stuff
-            /*
             UpdateGameStatus(GameStatus.SEARCHING);
             Search();
-
-            IAsyncAction asyncAction = Windows.System.Threading.ThreadPool.RunAsync((workItem) =>
-            {
-                while (true)
-                {
-                    App.Network.WaitingForPlayers(this);
-                 
-                    Debug.WriteLine("Searching");
-                    Task.Delay(TimeSpan.FromMilliseconds(50));
-                }
-            });*/
             
 
             UpdateGameStatus(GameStatus.WAITING);
