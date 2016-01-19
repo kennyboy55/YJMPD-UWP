@@ -56,15 +56,15 @@ namespace YJMPD_UWP.Model
 
         public void RemovePlayer(string username)
         {
-            Players.ForEach(p => {
-                if(p.Username == username)
+            for(int i=Players.Count-1; i>=0; i--)
+            {
+                if (Players[i].Username == username)
                 {
-                    Players.Remove(p);
-                    UpdateGamePlayers(p);
+                    UpdateGamePlayers(Players[i]);
+                    Players.RemoveAt(i);
                     return;
                 }
-            });
-            
+            }         
         }
 
         public void Reset()
@@ -86,15 +86,6 @@ namespace YJMPD_UWP.Model
             }
         }
 
-
-        //Searching
-
-        public async Task<bool> Search()
-        {
-            UpdateGameStatus(GameStatus.SEARCHING);
-            return await App.Api.SearchGame();
-        }
-
         //Starting and Stopping
 
         public async Task<bool> Start()
@@ -110,14 +101,13 @@ namespace YJMPD_UWP.Model
         private async Task<bool> StartGame()
         {
             UpdateGameStatus(GameStatus.SEARCHING);
-
-            Search();
-
-            return true;
+            return await App.Api.JoinGame();
         }
 
         private async Task<bool> StopGame()
         {
+            App.Api.LeaveGame();
+
             Reset();
 
             UpdateGameStatus(GameStatus.STOPPED);

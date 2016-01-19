@@ -97,11 +97,26 @@ namespace YJMPD_UWP.Model
         }
 
         //API stuff
-        public async Task<bool> SearchGame()
+        public async Task<bool> JoinGame()
         {
             JObject obj = JObject.FromObject(new
             {
                 command = Command.Name.ToString(),
+                name = Settings.Username,
+                lon = App.Geo.Position.Coordinate.Point.Position.Longitude,
+                lat = App.Geo.Position.Coordinate.Point.Position.Latitude
+            });
+            Debug.WriteLine(obj.ToString(Formatting.None));
+            await App.Network.Write(obj.ToString(Formatting.None));
+
+            return true;
+        }
+
+        public async Task<bool> LeaveGame()
+        {
+            JObject obj = JObject.FromObject(new
+            {
+                command = Command.PlayerRemoved.ToString(),
                 name = Settings.Username
             });
             Debug.WriteLine(obj.ToString(Formatting.None));
