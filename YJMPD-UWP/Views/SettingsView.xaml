@@ -11,7 +11,7 @@
         <StackPanel Style="{StaticResource BaseStackPanel}" >
             <StackPanel>
                 <TextBlock Text="Username" Style="{StaticResource Header}" />
-                <TextBox Text="{Binding Username, Mode=TwoWay}" />
+                <TextBox Text="{Binding Username, Mode=TwoWay}" IsEnabled="{Binding UsernameEnabled}"/>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
