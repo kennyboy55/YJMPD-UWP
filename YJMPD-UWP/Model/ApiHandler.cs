@@ -36,7 +36,6 @@ namespace YJMPD_UWP.Model
 
         public void HandleMessage(JObject o)
         {
-            Debug.WriteLine(o.ToString());
             Command c = (Command)Enum.Parse(typeof(Command), o["command"].ToString());
 
             switch (c)

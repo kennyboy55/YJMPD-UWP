@@ -1,4 +1,5 @@
 ﻿using System;
+using YJMPD_UWP.Helpers;
 
 namespace YJMPD_UWP.ViewModels
 {
@@ -31,7 +32,7 @@ namespace YJMPD_UWP.ViewModels
         {
             get
             {
-                return App.Game.Status.ToString();
+                return App.Game.Status.ToString().UppercaseFirst();
             }
         }
 
@@ -39,7 +40,10 @@ namespace YJMPD_UWP.ViewModels
         {
             get
             {
-                return App.Game.Players.Count + " players";
+                if (App.Game.Players.Count == 1)
+                    return "1 player";
+                else
+                    return App.Game.Players.Count + " players";
             }
         }
 

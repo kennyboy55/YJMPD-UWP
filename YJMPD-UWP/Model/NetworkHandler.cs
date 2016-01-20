@@ -50,7 +50,11 @@ namespace YJMPD_UWP.Model
             if (Status != NetworkStatus.CONNECTED)
                 return "error";
 
-            return await din.ReadLineAsync();
+            string data = await din.ReadLineAsync();
+
+            Debug.WriteLine("Receiving -> " + data);
+
+            return data;
         }
 
         public async Task<bool> Write(string data)
@@ -58,7 +62,7 @@ namespace YJMPD_UWP.Model
             if (Status != NetworkStatus.CONNECTED)
                 return false;
 
-            Debug.WriteLine(data);
+            Debug.WriteLine("Sending -> " + data);
 
             dout.WriteString(data + Environment.NewLine);
             await dout.StoreAsync();
@@ -98,7 +102,6 @@ namespace YJMPD_UWP.Model
 
                 while (running)
                 {
-                    Debug.WriteLine("Awaiting incoming data... " + workItem.Status.ToString());
 
                     string data = "";
 
