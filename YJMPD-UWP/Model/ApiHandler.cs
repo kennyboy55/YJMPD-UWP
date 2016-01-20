@@ -151,7 +151,7 @@ namespace YJMPD_UWP.Model
             JObject obj = JObject.FromObject(new
             {
                 command = Command.PictureUrl.ToString(),
-                pictureurl = url,
+                PictureUrl = url,
                 lon = App.Geo.Position.Coordinate.Point.Position.Longitude,
                 lat = App.Geo.Position.Coordinate.Point.Position.Latitude
             });

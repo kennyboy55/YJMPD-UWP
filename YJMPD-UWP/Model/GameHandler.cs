@@ -72,6 +72,7 @@ namespace YJMPD_UWP.Model
         {
             Players = new List<Player>();
             Status = GameStatus.STOPPED;
+            Selected = false;
             App.Photo.OnStatusUpdate += Photo_OnStatusUpdate;
             GeofenceMonitor.Current.GeofenceStateChanged += Current_GeofenceStateChanged;
         }

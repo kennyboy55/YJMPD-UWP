@@ -7,7 +7,8 @@ namespace YJMPD_UWP.ViewModels
     {
         public MatchVM() : base("Match")
         {
-
+            Error = "";
+            Message = "";
             App.Game.OnDestinationEnter += Game_OnDestinationEnter;
             App.Game.OnDestinationLeave += Game_OnDestinationLeave;
         }
