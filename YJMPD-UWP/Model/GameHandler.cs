@@ -53,6 +53,12 @@ namespace YJMPD_UWP.Model
         {
             Players = new List<Player>();
             Status = GameStatus.STOPPED;
+            App.Photo.OnPhotoTaken += Photo_OnPhotoTaken;
+        }
+
+        private void Photo_OnPhotoTaken(object sender, PhotoTakenEventArgs e)
+        {
+            App.Api.SendPicture(e.Photo);
         }
 
         public void AddPlayer(string username)
@@ -76,6 +82,12 @@ namespace YJMPD_UWP.Model
         public void MoveToWaiting()
         {
             UpdateGameStatus(GameStatus.WAITING);
+        }
+
+        public void MoveToStarted()
+        {
+            App.Navigate(typeof(GameView));
+            UpdateGameStatus(GameStatus.STARTED);
         }
 
         public void RemovePlayer(string username)
@@ -179,10 +191,7 @@ namespace YJMPD_UWP.Model
                         App.Navigate(typeof(WaitingView));
                     break;
                 case GameStatus.STARTED:
-                    if (Selected && App.Photo.Photo == null)
-                        App.Navigate(typeof(PhotoView));
-                    else
-                        App.Navigate(typeof(GameView));
+                    App.Navigate(typeof(GameView));
                     break;
                 case GameStatus.ENDED:
                     App.Navigate(typeof(ScoreView));

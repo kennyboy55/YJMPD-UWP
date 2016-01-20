@@ -20,23 +20,23 @@ namespace YJMPD_UWP
         // =======================
         //      SINGLETONS
         // =======================
-        private static GeoHandler geohandler = new GeoHandler();
+        private static PhotoHandler photohandler = new PhotoHandler();
 
-        public static GeoHandler Geo
+        public static PhotoHandler Photo
         {
             get
             {
-                return geohandler;
+                return photohandler;
             }
         }
 
-        private static CompassHandler compasshandler = new CompassHandler();
+        private static GameHandler gamehandler = new GameHandler();
 
-        public static CompassHandler Compass
+        public static GameHandler Game
         {
             get
             {
-                return compasshandler;
+                return gamehandler;
             }
         }
 
@@ -60,23 +60,23 @@ namespace YJMPD_UWP
             }
         }
 
-        private static GameHandler gamehandler = new GameHandler();
+        private static GeoHandler geohandler = new GeoHandler();
 
-        public static GameHandler Game
+        public static GeoHandler Geo
         {
             get
             {
-                return gamehandler;
+                return geohandler;
             }
         }
 
-        private static PhotoHandler photohandler = new PhotoHandler();
+        private static CompassHandler compasshandler = new CompassHandler();
 
-        public static PhotoHandler Photo
+        public static CompassHandler Compass
         {
             get
             {
-                return photohandler;
+                return compasshandler;
             }
         }
 

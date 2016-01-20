@@ -58,7 +58,10 @@ namespace YJMPD_UWP.Model
                     App.Game.MoveToWaiting();
                     break;
                 case Command.PictureUrl:
-                    //Download picture from URL and display to participants
+                    if (!App.Game.Selected)
+                        App.Photo.UpdatePhotoTaken(o[Command.PictureUrl.ToString()].ToString());
+
+                    App.Game.MoveToStarted();
                     break;
                 default:
                     //Do nothing
@@ -98,7 +101,6 @@ namespace YJMPD_UWP.Model
                 lon = App.Geo.Position.Coordinate.Point.Position.Longitude,
                 lat = App.Geo.Position.Coordinate.Point.Position.Latitude
             });
-            Debug.WriteLine(obj.ToString(Formatting.None));
             await App.Network.Write(obj.ToString(Formatting.None));
 
             return true;
@@ -111,7 +113,18 @@ namespace YJMPD_UWP.Model
                 command = Command.PlayerRemoved.ToString(),
                 name = Settings.Username
             });
-            Debug.WriteLine(obj.ToString(Formatting.None));
+            await App.Network.Write(obj.ToString(Formatting.None));
+
+            return true;
+        }
+
+        public async Task<bool> SendPicture(string url)
+        {
+            JObject obj = JObject.FromObject(new
+            {
+                command = Command.PictureUrl.ToString(),
+                pictureurl = url
+            });
             await App.Network.Write(obj.ToString(Formatting.None));
 
             return true;

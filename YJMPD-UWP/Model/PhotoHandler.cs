@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
@@ -17,7 +19,7 @@ namespace YJMPD_UWP.Model
         public delegate void OnPhotoTakenHandler(object sender, PhotoTakenEventArgs e);
         public event OnPhotoTakenHandler OnPhotoTaken;
 
-        public SoftwareBitmapSource Photo { get; private set; }
+        public string Photo { get; private set; }
 
         public PhotoHandler()
         {
@@ -29,7 +31,7 @@ namespace YJMPD_UWP.Model
             Photo = null;
         }
 
-        private void UpdatePhotoTaken(SoftwareBitmapSource photo)
+        public void UpdatePhotoTaken(string photo)
         {
             Photo = photo;
 
@@ -63,9 +65,9 @@ namespace YJMPD_UWP.Model
             SoftwareBitmapSource bitmapSource = new SoftwareBitmapSource();
             await bitmapSource.SetBitmapAsync(softwareBitmapBGR8);
 
-            await UploadImage(stream.AsStream());
+            string photoURL = await UploadImage(stream.AsStream());
 
-            UpdatePhotoTaken(bitmapSource);
+            UpdatePhotoTaken(photoURL);
         }
 
         public async Task<string> UploadImage(Stream file)
@@ -79,8 +81,11 @@ namespace YJMPD_UWP.Model
                 {
                     var response = await hc.PostAsync(url, postdata);
                     response.EnsureSuccessStatusCode();
-                    Debug.WriteLine(await response.Content.ReadAsStringAsync());
-                    return await response.Content.ReadAsStringAsync();
+                    string imageurl = await response.Content.ReadAsStringAsync();
+                    string imageid = new List<string>(imageurl.Split('/')).Last();
+
+                    return imageurl + "/" + imageid;
+
                 }
                 catch
                 {

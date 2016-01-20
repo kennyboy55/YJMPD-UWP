@@ -11,14 +11,14 @@
     <Page.Resources>
         <convert:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
     </Page.Resources>
-    
-    <ScrollViewer>
-        <Grid Style="{StaticResource BaseGrid}">
-            <Image Name="Photo" Stretch="UniformToFill" Source="{Binding Photo}" Visibility="{Binding PhotoVisible, Converter={StaticResource BoolToVisConverter}}"/>
-            <StackPanel Visibility="{Binding ControlsVisible, Converter={StaticResource BoolToVisConverter}}">
-                <TextBlock Text="{Binding TimeOut}" />
-                <Button Content="Take Photo" Style="{StaticResource Green}" Click="PhotoButton_Click" />
-            </StackPanel>
-        </Grid>
-    </ScrollViewer>
+
+    <Grid Style="{StaticResource BaseGrid}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Visibility="{Binding PhotoVisible, Converter={StaticResource BoolToVisConverter}}">
+            <Image Name="Photo" Source="{Binding Photo}"/>
+        </ScrollViewer>
+        <StackPanel Visibility="{Binding ControlsVisible, Converter={StaticResource BoolToVisConverter}}">
+            <TextBlock Text="{Binding TimeOut}" />
+            <Button Content="Take Photo" Style="{StaticResource Green}" Click="PhotoButton_Click" />
+        </StackPanel>
+    </Grid>
 </Page>

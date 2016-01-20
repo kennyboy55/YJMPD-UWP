@@ -4,9 +4,9 @@ namespace YJMPD_UWP.Helpers.EventArgs
 {
     public class PhotoTakenEventArgs : System.EventArgs
     {
-        public SoftwareBitmapSource Photo { get; private set; }
+        public string Photo { get; private set; }
 
-        public PhotoTakenEventArgs(SoftwareBitmapSource photo)
+        public PhotoTakenEventArgs(string photo)
         {
             Photo = photo;
         }

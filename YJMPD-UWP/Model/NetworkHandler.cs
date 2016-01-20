@@ -58,6 +58,8 @@ namespace YJMPD_UWP.Model
             if (Status != NetworkStatus.CONNECTED)
                 return false;
 
+            Debug.WriteLine(data);
+
             dout.WriteString(data + Environment.NewLine);
             await dout.StoreAsync();
             await dout.FlushAsync();
