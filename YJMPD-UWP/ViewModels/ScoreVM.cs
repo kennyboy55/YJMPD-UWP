@@ -37,9 +37,9 @@ namespace YJMPD_UWP.ViewModels
             get
             {
                 if (App.Game.Players.Count == 1)
-                    return "There is currently " + App.Game.Players.Count + " player in the match.";
+                    return "There is currently " + App.Game.Players.Count + " player in the game.";
                 else
-                    return "There are currently " + App.Game.Players.Count + " players in the match.";
+                    return "There are currently " + App.Game.Players.Count + " players in the game.";
             }
         }
     }

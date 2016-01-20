@@ -43,12 +43,18 @@ namespace YJMPD_UWP
             this.InitializeComponent();
 
             Frame.Navigated += Frame_Navigated;
-            Frame.Navigate(typeof(MatchView));
+            Frame.Navigate(typeof(GameView));
         }
 
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
             if (e.Handled) return;
+
+            if (App.Game.Status == Model.GameHandler.GameStatus.STARTED)
+            {
+                e.Handled = true;
+                return;
+            }
 
             if (Frame.CanGoBack)
             {
@@ -92,7 +98,7 @@ namespace YJMPD_UWP
 
             switch (pagename.ToLower())
             {
-                case "matchview":
+                case "gameview":
                     NavList.SelectedIndex = 0;
                     break;
                 case "statisticsview":
@@ -122,7 +128,7 @@ namespace YJMPD_UWP
             {
                 if (Frame.BackStack.Count >= 1)
                     Frame.BackStack.Clear();
-                Frame.Navigate(typeof(MatchView));
+                Frame.Navigate(typeof(GameView));
             }
             else
             if (NavListStatistics.IsSelected)

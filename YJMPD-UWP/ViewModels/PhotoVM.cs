@@ -28,7 +28,7 @@ namespace YJMPD_UWP.ViewModels
             secondsleft--;
             if(secondsleft <= 0)
             {
-                App.Game.Stop();   
+                App.Game.StopGame();   
             }
         }
 

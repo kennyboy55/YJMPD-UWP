@@ -130,7 +130,7 @@ namespace YJMPD_UWP.Model
             Debug.WriteLine("Disconnecting...");
 
             if (App.Game.Status != GameHandler.GameStatus.STOPPED)
-                await App.Game.Stop();
+                await App.Game.StopGame();
 
             UpdateNetworkStatus(NetworkStatus.DISCONNECTED);
 

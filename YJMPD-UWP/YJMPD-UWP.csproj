@@ -119,9 +119,9 @@
     <Compile Include="Model\PhotoHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AboutVM.cs" />
-    <Compile Include="ViewModels\GameVM.cs" />
-    <Compile Include="ViewModels\MainPageVM.cs" />
     <Compile Include="ViewModels\MatchVM.cs" />
+    <Compile Include="ViewModels\MainPageVM.cs" />
+    <Compile Include="ViewModels\GameVM.cs" />
     <Compile Include="ViewModels\PhotoVM.cs" />
     <Compile Include="ViewModels\ScoreVM.cs" />
     <Compile Include="ViewModels\SettingsVM.cs" />
@@ -130,11 +130,11 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GameView.xaml.cs">
-      <DependentUpon>GameView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MatchView.xaml.cs">
       <DependentUpon>MatchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GameView.xaml.cs">
+      <DependentUpon>GameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PhotoView.xaml.cs">
       <DependentUpon>PhotoView.xaml</DependentUpon>
@@ -196,11 +196,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\GameView.xaml">
+    <Page Include="Views\MatchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MatchView.xaml">
+    <Page Include="Views\GameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

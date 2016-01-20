@@ -12,42 +12,17 @@
         <convert:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <ScrollViewer Grid.Row="0">
-            <StackPanel Style="{StaticResource BaseStackPanel}" >
-                <StackPanel>
-                    <TextBlock Text="Start a match" Style="{StaticResource Header}" />
-                    <Button Content="Start match" Style="{StaticResource Green}" Click="StartMatchButton_Click" IsEnabled="{Binding MatchAvailable}" Visibility="{Binding StartMatch, Converter={StaticResource BoolToVisConverter}}" />
-                    <Button Content="Leave match" Style="{StaticResource Red}" Click="StopMatchButton_Click" Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" />
-                </StackPanel>
-
-                <StackPanel Visibility="{Binding StopMatch, Converter={StaticResource BoolToVisConverter}}" Margin="0,10,0,0">
-                    <TextBlock Text="Current players in match" Style="{StaticResource Header}" />
-
-                    <TextBlock Text="{Binding PlayersCount}" />
-
-                    <ListView x:Name="PlayersList" ItemsSource="{Binding Players}" SelectionMode="None" IsTapEnabled="False">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:Name="ListViewDataTemplate">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Username}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-
-                </StackPanel>
-            </StackPanel>
+    <Grid Style="{StaticResource BaseGrid}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled">
+            <Image Name="Photo" Stretch="UniformToFill" Source="{Binding Photo}"/>
         </ScrollViewer>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Visibility="{Binding ServerAvailable, Converter={StaticResource BoolToVisConverter}}" Padding="20" Background="Gray">
-            <ProgressRing Width="20" Height="20" IsActive="True" Margin="0,0,10,0" Foreground="White"/>
-            <TextBlock Text="{Binding ServerMessage}" Foreground="White" />
+        <StackPanel Visibility="{Binding MessageVisible, Converter={StaticResource BoolToVisConverter}}" Background="DarkGreen" Padding="20" VerticalAlignment="Bottom">
+            <TextBlock Foreground="White" Text="{Binding Message}" />
+        </StackPanel>
+
+        <StackPanel Visibility="{Binding ErrorVisible, Converter={StaticResource BoolToVisConverter}}" Background="DarkRed" Padding="20" VerticalAlignment="Bottom">
+            <TextBlock Foreground="White" Text="{Binding Error}" />
         </StackPanel>
     </Grid>
 </Page>

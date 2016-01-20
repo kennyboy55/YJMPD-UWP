@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using YJMPD_UWP.Model.Object;
+﻿using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace YJMPD_UWP.ViewModels
 {
@@ -8,135 +7,71 @@ namespace YJMPD_UWP.ViewModels
     {
         public MatchVM() : base("Match")
         {
-            App.Geo.OnStatusUpdate += Geo_OnStatusUpdate;
-            App.Network.OnStatusUpdate += Network_OnStatusUpdate;
-            App.Game.OnStatusUpdate += Game_OnStatusUpdate;
-            App.Game.OnPlayersUpdate += Game_OnPlayersUpdate;
+
+            App.Game.OnDestinationEnter += Game_OnDestinationEnter;
+            App.Game.OnDestinationLeave += Game_OnDestinationLeave;
         }
 
-        private void Game_OnPlayersUpdate(object sender, Helpers.EventArgs.GamePlayersUpdatedEventArgs e)
+        private void Game_OnDestinationLeave(object sender, System.EventArgs e)
         {
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                NotifyPropertyChanged(nameof(Players));
-                NotifyPropertyChanged(nameof(PlayersCount));
+                if (App.Game.Selected)
+                    Error = "Return to location!";
+
+                NotifyPropertyChanged(nameof(ErrorVisible));
+                NotifyPropertyChanged(nameof(Error));
             });
         }
 
-        private void Game_OnStatusUpdate(object sender, Helpers.EventArgs.GameStatusUpdatedEventArgs e)
+        private void Game_OnDestinationEnter(object sender, System.EventArgs e)
         {
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                NotifyPropertyChanged(nameof(StartMatch));
-                NotifyPropertyChanged(nameof(StopMatch));
-            });
+                if (App.Game.Selected)
+                    Error = "";
+
+                if (!App.Game.Selected)
+                    Message = "You reached the destination!";
+
+                NotifyPropertyChanged(nameof(ErrorVisible));
+                NotifyPropertyChanged(nameof(Error));
+                NotifyPropertyChanged(nameof(MessageVisible));
+                NotifyPropertyChanged(nameof(Message));
+            });   
         }
 
-        private void Network_OnStatusUpdate(object sender, Helpers.EventArgs.NetworkStatusUpdatedEventArgs e)
-        {
-            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                NotifyPropertyChanged(nameof(MatchAvailable));
-                NotifyPropertyChanged(nameof(ServerAvailable));
-                NotifyPropertyChanged(nameof(ServerMessage));
-            });
-        }
-
-        private void Geo_OnStatusUpdate(object sender, Helpers.EventArgs.PositionStatusUpdatedEventArgs e)
-        {
-            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                NotifyPropertyChanged(nameof(MatchAvailable));
-                NotifyPropertyChanged(nameof(ServerAvailable));
-                NotifyPropertyChanged(nameof(ServerMessage));
-            });
-        }
-        
-
-        public List<Player> Players
+        public bool MessageVisible
         {
             get
             {
-                return new List<Player>(App.Game.Players);
+                return Message != "";
             }
         }
 
-        public string PlayersCount
+        public bool ErrorVisible
         {
             get
             {
-                if (App.Game.Players.Count == 1)
-                    return "There is currently " + App.Game.Players.Count + " player in the match.";
-                else
-                    return "There are currently " + App.Game.Players.Count + " players in the match.";
+                return Error != "";
             }
         }
 
-        public bool MatchAvailable
+        public string Message
         {
-            get
-            {
-                return App.Geo.Status == Windows.Devices.Geolocation.PositionStatus.Ready && App.Network.Status == Model.NetworkHandler.NetworkStatus.CONNECTED;
-            }
+            get; private set;
         }
 
-        public bool ServerAvailable
+        public string Error
         {
-            get
-            {
-                return !MatchAvailable;
-            }
+            get; private set;
         }
 
-        public string ServerMessage
+        public ImageSource Photo
         {
             get
             {
-                string str = "";
-
-                switch (App.Network.Status)
-                {
-                    case Model.NetworkHandler.NetworkStatus.DISCONNECTED:
-                        str = "Disconnected";
-                        break;
-                    case Model.NetworkHandler.NetworkStatus.CONNECTING:
-                        str = "Connecting to server...";
-                        break;
-                }
-
-                switch(App.Geo.Status)
-                {
-                    case Windows.Devices.Geolocation.PositionStatus.Disabled:
-                    case Windows.Devices.Geolocation.PositionStatus.NotAvailable:
-                    case Windows.Devices.Geolocation.PositionStatus.NoData:
-                        str = "GPS not available";
-                        break;
-                    case Windows.Devices.Geolocation.PositionStatus.NotInitialized:
-                    case Windows.Devices.Geolocation.PositionStatus.Initializing:
-                        str = "Waiting on GPS...";
-                        break;
-                }
-
-                if (str == "")
-                    str = "Connected";
-
-                return str;
-            }
-        }
-
-        public bool StartMatch
-        {
-            get
-            {
-                return App.Game.Status == Model.GameHandler.GameStatus.STOPPED;
-            }
-        }
-
-        public bool StopMatch
-        {
-            get
-            {
-                return !StartMatch;
+                return new BitmapImage(new System.Uri(App.Photo.Photo));
             }
         }
     }

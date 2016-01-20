@@ -74,7 +74,7 @@
                             <ListBoxItem Name="NavListHome" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
                                 <StackPanel Style="{StaticResource NavStackPanel}">
                                     <TextBlock Style="{StaticResource NavIcon}" Text="&#xE80F;"/>
-                                    <TextBlock Style="{StaticResource NavText}" Text="Match"/>
+                                    <TextBlock Style="{StaticResource NavText}" Text="Game"/>
                                 </StackPanel>
                             </ListBoxItem>
                             <ListBoxItem Name="NavListStatistics" ManipulationMode="TranslateX" ManipulationCompleted="Pane_ManipulationCompleted">
@@ -116,7 +116,7 @@
                                 <TextBlock Style="{StaticResource GameInfoText}" Text="{Binding Players}"/>
                             </StackPanel>
 
-                            <StackPanel Style="{StaticResource GameInfoPanel}" HorizontalAlignment="Stretch">
+                            <StackPanel Style="{StaticResource GameInfoPanel}">
                                 <Button Content="Back to Game" Click="BackToGame_Click" Style="{StaticResource Green}"/>
                             </StackPanel>
                         </StackPanel>

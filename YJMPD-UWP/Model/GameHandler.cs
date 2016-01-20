@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.Devices.Geolocation.Geofencing;
 using Windows.Foundation;
 using Windows.Services.Maps;
@@ -21,6 +22,12 @@ namespace YJMPD_UWP.Model
 
         public delegate void OnPlayersUpdateHandler(object sender, GamePlayersUpdatedEventArgs e);
         public event OnPlayersUpdateHandler OnPlayersUpdate;
+
+        public delegate void OnDestinationEnteredHandler(object sender, EventArgs e);
+        public event OnDestinationEnteredHandler OnDestinationEnter;
+
+        public delegate void OnDestinationLeftHandler(object sender, EventArgs e);
+        public event OnDestinationLeftHandler OnDestinationLeave;
 
         public enum GameStatus { STARTED, SEARCHING, WAITING, ENDED, STOPPED }
         public GameStatus Status { get; private set; }
@@ -48,12 +55,56 @@ namespace YJMPD_UWP.Model
 
             OnPlayersUpdate(this, new GamePlayersUpdatedEventArgs(player));
         }
+        private void UpdateDestinationEnter()
+        {
+            if (OnDestinationEnter == null) return;
+
+            OnDestinationEnter(this, new EventArgs());
+        }
+        private void UpdateDestinationLeave()
+        {
+            if (OnDestinationLeave == null) return;
+
+            OnDestinationLeave(this, new EventArgs());
+        }
 
         public GameHandler()
         {
             Players = new List<Player>();
             Status = GameStatus.STOPPED;
             App.Photo.OnStatusUpdate += Photo_OnStatusUpdate;
+            GeofenceMonitor.Current.GeofenceStateChanged += Current_GeofenceStateChanged;
+        }
+
+        private void Current_GeofenceStateChanged(GeofenceMonitor sender, object args)
+        {
+            if (Status != GameStatus.STARTED) return;
+
+            var reports = sender.ReadReports();
+
+            foreach (GeofenceStateChangeReport report in reports)
+            {
+                GeofenceState state = report.NewState;
+                Geofence geofence = report.Geofence;
+
+                if (geofence.Id != "destination") continue;
+
+                else if (state == GeofenceState.Entered)
+                {
+                    UpdateDestinationEnter();
+
+                    if (!Selected)
+                        App.Api.DestinationReached();
+                }
+
+                else if (state == GeofenceState.Exited)
+                {
+                    UpdateDestinationLeave();
+
+                    if (Selected)
+                        Util.ShowToastNotification("Left Area", "Please return to your location!");
+                }
+            }
         }
 
         private void Photo_OnStatusUpdate(object sender, PhotoStatusUpdatedEventArgs e)
@@ -93,9 +144,12 @@ namespace YJMPD_UWP.Model
             UpdateGameStatus(GameStatus.WAITING);
         }
 
-        public void MoveToStarted()
+        public void MoveToStarted(BasicGeoposition bgps)
         {
             App.Navigate(typeof(GameView));
+
+            GeofenceMonitor.Current.Geofences.Add(new Geofence("destination", new Geocircle(bgps, 50), MonitoredGeofenceStates.Entered | MonitoredGeofenceStates.Exited, false, TimeSpan.FromSeconds(1)));
+
             UpdateGameStatus(GameStatus.STARTED);
         }
 
@@ -120,7 +174,7 @@ namespace YJMPD_UWP.Model
             GeofenceMonitor.Current.Geofences.Clear();
             UpdateGamePlayers(null);
 
-            App.Navigate(typeof(MatchView));
+            App.Navigate(typeof(GameView));
         }
 
         public void UpdatePlayer(string username, double pointstotal, double points)
@@ -136,13 +190,30 @@ namespace YJMPD_UWP.Model
             }
         }
 
+        public Player GetPlayer(string username)
+        {
+            foreach(Player p in Players)
+            {
+                if(p.Username == username)
+                    return p;
+            }
+
+            return null;
+        }
+
         //Ending
 
-        public async Task<bool> End()
+        public async Task<bool> StopMatch()
         {
             CalculateDistanceWalked();
             Settings.Statistics.Matches += 1;
 
+            Settings.Statistics.AddPoints(GetPlayer(Settings.Username).Points);
+
+            GeofenceMonitor.Current.Geofences.Clear();
+            Selected = false;
+
+            App.Navigate(typeof(ScoreView));
             UpdateGameStatus(GameStatus.ENDED);
 
             return true;
@@ -156,23 +227,13 @@ namespace YJMPD_UWP.Model
 
         //Starting and Stopping
 
-        public async Task<bool> Start()
-        {
-            return await StartGame();
-        }
-
-        public async Task<bool> Stop()
-        {
-            return await StopGame();
-        }
-
-        private async Task<bool> StartGame()
+        public async Task<bool> StartGame()
         {
             UpdateGameStatus(GameStatus.SEARCHING);
             return await App.Api.JoinGame();
         }
 
-        private async Task<bool> StopGame()
+        public async Task<bool> StopGame()
         {
             App.Api.LeaveGame();
 
@@ -191,7 +252,7 @@ namespace YJMPD_UWP.Model
                 case GameStatus.STOPPED:
                     break;
                 case GameStatus.SEARCHING:
-                    App.Navigate(typeof(MatchView));
+                    App.Navigate(typeof(GameView));
                     break;
                 case GameStatus.WAITING:
                     if (Selected)

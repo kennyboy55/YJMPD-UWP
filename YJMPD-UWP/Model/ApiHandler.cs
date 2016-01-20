@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using YJMPD_UWP.Helpers;
 using YJMPD_UWP.Views;
 
@@ -22,7 +23,10 @@ namespace YJMPD_UWP.Model
             Msg,
             PlayerJoined,
             PlayerRemoved,
-            PictureUrl
+            PictureUrl,
+            DestinationReached,
+            GameEnded,
+            PlayerReady
         }
 
         public ApiHandler()
@@ -60,7 +64,33 @@ namespace YJMPD_UWP.Model
                     if (!App.Game.Selected)
                         App.Photo.SetPhoto(o[Command.PictureUrl.ToString()].ToString());
 
-                    App.Game.MoveToStarted();
+                    double lat = (double)o["lat"];
+                    double lon = (double)o["lon"];
+
+                    BasicGeoposition bgps = new BasicGeoposition() { Latitude = lat, Longitude = lon };
+
+                    App.Game.MoveToStarted(bgps);
+                    break;
+                case Command.GameEnded:
+                    string winner = o["winner"].ToString();
+
+                    if (winner == Settings.Username)
+                        winner = "You";
+
+                    Util.ShowToastNotification(winner + " won!", "Press Ready or Leave");
+
+                    JArray players = (JArray)o["players"];
+
+                    foreach(JToken pl in players)
+                    {
+                        string username = o["username"].ToString();
+                        double points = (double)o["points"];
+                        double pointstotal = (double)o["pointstotal"];
+
+                        App.Game.UpdatePlayer(username, pointstotal, points);
+                    }
+
+                    App.Game.StopMatch();
                     break;
                 default:
                     //Do nothing
@@ -125,6 +155,30 @@ namespace YJMPD_UWP.Model
                 pictureurl = url,
                 lon = App.Geo.Position.Coordinate.Point.Position.Longitude,
                 lat = App.Geo.Position.Coordinate.Point.Position.Latitude
+            });
+            await App.Network.Write(obj.ToString(Formatting.None));
+
+            return true;
+        }
+
+        public async Task<bool> DestinationReached()
+        {
+            JObject obj = JObject.FromObject(new
+            {
+                command = Command.DestinationReached.ToString(),
+                username = Settings.Username
+            });
+            await App.Network.Write(obj.ToString(Formatting.None));
+
+            return true;
+        }
+
+        public async Task<bool> Ready()
+        {
+            JObject obj = JObject.FromObject(new
+            {
+                command = Command.PlayerReady.ToString(),
+                ready = true
             });
             await App.Network.Write(obj.ToString(Formatting.None));
 

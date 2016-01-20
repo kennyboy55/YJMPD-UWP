@@ -27,9 +27,12 @@ namespace YJMPD_UWP.Views
             ReadyCheck.Visibility = Visibility.Visible;
             ReadyButton.IsEnabled = false;
 
-            Task.Delay(TimeSpan.FromMilliseconds(1500));
+            App.Api.Ready();
 
-            App.Navigate(typeof(WaitingView));
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+
+            App.Game.MoveToWaiting();
+            App.Navigate(typeof(WaitingView), "Waiting on other players...");
         }
     }
 }
