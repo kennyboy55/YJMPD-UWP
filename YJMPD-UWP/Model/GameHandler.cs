@@ -53,12 +53,21 @@ namespace YJMPD_UWP.Model
         {
             Players = new List<Player>();
             Status = GameStatus.STOPPED;
-            App.Photo.OnPhotoTaken += Photo_OnPhotoTaken;
+            App.Photo.OnStatusUpdate += Photo_OnStatusUpdate;
         }
 
-        private void Photo_OnPhotoTaken(object sender, PhotoTakenEventArgs e)
+        private void Photo_OnStatusUpdate(object sender, PhotoStatusUpdatedEventArgs e)
         {
-            App.Api.SendPicture(e.Photo);
+            switch(e.Status)
+            {
+                case PhotoHandler.PhotoStatus.UPLOADING:
+                    App.Navigate(typeof(WaitingView), "Uploading...");
+                    break;
+                case PhotoHandler.PhotoStatus.DONE:
+                    if(Selected)
+                        App.Api.SendPhoto(App.Photo.Photo);
+                    break;
+            }
         }
 
         public void AddPlayer(string username)

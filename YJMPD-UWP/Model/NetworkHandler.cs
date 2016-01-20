@@ -18,8 +18,8 @@ namespace YJMPD_UWP.Model
 {
     public class NetworkHandler
     {
-        public delegate void OnStatusUpdatedHandler(object sender, NetworkStatusUpdatedEventArgs e);
-        public event OnStatusUpdatedHandler OnStatusUpdate;
+        public delegate void OnStatusUpdateHandler(object sender, NetworkStatusUpdatedEventArgs e);
+        public event OnStatusUpdateHandler OnStatusUpdate;
 
         public enum NetworkStatus { DISCONNECTED, CONNECTING, CONNECTED }
         public NetworkStatus Status { get; private set; }

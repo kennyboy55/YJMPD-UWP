@@ -48,18 +48,17 @@ namespace YJMPD_UWP.Model
                 case Command.Picture:
                     if (o["selected"].ToObject<bool>() == true)
                     {
-                        Debug.WriteLine("Selected player taking picture");
                         App.Game.SetSelected(true);
                         App.Navigate(typeof(PhotoView));
                     }
                     else
-                        App.Navigate(typeof(WaitingView));
+                        App.Navigate(typeof(WaitingView), "Waiting on photo...");
 
                     App.Game.MoveToWaiting();
                     break;
                 case Command.PictureUrl:
                     if (!App.Game.Selected)
-                        App.Photo.UpdatePhotoTaken(o[Command.PictureUrl.ToString()].ToString());
+                        App.Photo.SetPhoto(o[Command.PictureUrl.ToString()].ToString());
 
                     App.Game.MoveToStarted();
                     break;
@@ -118,12 +117,14 @@ namespace YJMPD_UWP.Model
             return true;
         }
 
-        public async Task<bool> SendPicture(string url)
+        public async Task<bool> SendPhoto(string url)
         {
             JObject obj = JObject.FromObject(new
             {
                 command = Command.PictureUrl.ToString(),
-                pictureurl = url
+                pictureurl = url,
+                lon = App.Geo.Position.Coordinate.Point.Position.Longitude,
+                lat = App.Geo.Position.Coordinate.Point.Position.Latitude
             });
             await App.Network.Write(obj.ToString(Formatting.None));
 

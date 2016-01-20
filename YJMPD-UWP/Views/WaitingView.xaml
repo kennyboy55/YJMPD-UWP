@@ -10,7 +10,7 @@
     <RelativePanel Style="{StaticResource BaseRelativePanel}">
         <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,-50,0,0">
             <ProgressRing Width="80" Height="80" HorizontalAlignment="Center" IsActive="True" />
-            <TextBlock Text="Waiting on other players..." FontSize="20" Margin="0,20,0,0"/>
+            <TextBlock Text="Waiting..." Name="WaitingMsg" FontSize="20" Margin="0,20,0,0"/>
         </StackPanel>
     </RelativePanel>
 </Page>

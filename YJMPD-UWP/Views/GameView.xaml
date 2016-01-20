@@ -7,9 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <ScrollViewer>
-        <StackPanel Style="{StaticResource BaseStackPanel}">
-
-        </StackPanel>
-    </ScrollViewer>
+    <Grid Style="{StaticResource BaseGrid}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled">
+            <Image Name="Photo" Source="{Binding Photo}"/>
+        </ScrollViewer>
+    </Grid>
 </Page>

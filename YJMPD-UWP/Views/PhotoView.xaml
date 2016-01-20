@@ -8,17 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <convert:BoolToVisibilityConverter x:Key="BoolToVisConverter" />
-    </Page.Resources>
-
-    <Grid Style="{StaticResource BaseGrid}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Visibility="{Binding PhotoVisible, Converter={StaticResource BoolToVisConverter}}">
-            <Image Name="Photo" Source="{Binding Photo}"/>
-        </ScrollViewer>
-        <StackPanel Visibility="{Binding ControlsVisible, Converter={StaticResource BoolToVisConverter}}">
-            <TextBlock Text="{Binding TimeOut}" />
-            <Button Content="Take Photo" Style="{StaticResource Green}" Click="PhotoButton_Click" />
-        </StackPanel>
-    </Grid>
+    <StackPanel  Style="{StaticResource BaseStackPanel}">
+        <TextBlock Text="{Binding TimeOut}" Margin="0,5,0,10" />
+        <Button Content="Take Photo" Style="{StaticResource Green}" Click="PhotoButton_Click" />
+    </StackPanel>
 </Page>

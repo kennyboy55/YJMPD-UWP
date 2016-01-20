@@ -16,32 +16,43 @@ namespace YJMPD_UWP.Model
 {
     public class PhotoHandler
     {
-        public delegate void OnPhotoTakenHandler(object sender, PhotoTakenEventArgs e);
-        public event OnPhotoTakenHandler OnPhotoTaken;
+        public delegate void OnStatusUpdateHandler(object sender, PhotoStatusUpdatedEventArgs e);
+        public event OnStatusUpdateHandler OnStatusUpdate;
 
+        public enum PhotoStatus { NOPHOTO, TAKING, UPLOADING, DONE}
+        public PhotoStatus Status;
         public string Photo { get; private set; }
 
         public PhotoHandler()
         {
-
+            Status = PhotoStatus.NOPHOTO;
         }
 
         public void Reset()
         {
             Photo = null;
+            Status = PhotoStatus.NOPHOTO;
         }
 
-        public void UpdatePhotoTaken(string photo)
+        public void SetPhoto(string photo)
         {
             Photo = photo;
+            UpdateStatus(PhotoStatus.DONE);
+        }
 
-            if (OnPhotoTaken == null) return;
+        private void UpdateStatus(PhotoStatus status)
+        {
+            Status = status;
 
-            OnPhotoTaken(this, new PhotoTakenEventArgs(photo));
+            if (OnStatusUpdate == null) return;
+
+            OnStatusUpdate(this, new PhotoStatusUpdatedEventArgs(status));
         }
 
         public async void Take()
         {
+            UpdateStatus(PhotoStatus.TAKING);
+
             CameraCaptureUI captureUI = new CameraCaptureUI();
             captureUI.PhotoSettings.Format = CameraCaptureUIPhotoFormat.Png;
             captureUI.PhotoSettings.AllowCropping = false;
@@ -51,6 +62,7 @@ namespace YJMPD_UWP.Model
 
             if (photo == null)
             {
+                UpdateStatus(PhotoStatus.NOPHOTO);
                 return;
             }
 
@@ -65,9 +77,13 @@ namespace YJMPD_UWP.Model
             SoftwareBitmapSource bitmapSource = new SoftwareBitmapSource();
             await bitmapSource.SetBitmapAsync(softwareBitmapBGR8);
 
+            UpdateStatus(PhotoStatus.UPLOADING);
+
             string photoURL = await UploadImage(stream.AsStream());
 
-            UpdatePhotoTaken(photoURL);
+            Photo = photoURL;
+
+            UpdateStatus(PhotoStatus.DONE);
         }
 
         public async Task<string> UploadImage(Stream file)
