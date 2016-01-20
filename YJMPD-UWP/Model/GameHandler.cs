@@ -146,7 +146,7 @@ namespace YJMPD_UWP.Model
 
         public void MoveToStarted(BasicGeoposition bgps)
         {
-            App.Navigate(typeof(GameView));
+            App.Navigate(typeof(MatchView));
 
             GeofenceMonitor.Current.Geofences.Add(new Geofence("destination", new Geocircle(bgps, 50), MonitoredGeofenceStates.Entered | MonitoredGeofenceStates.Exited, false, TimeSpan.FromSeconds(1)));
 
