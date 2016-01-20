@@ -262,7 +262,7 @@ namespace YJMPD_UWP.Model
                         App.Navigate(typeof(WaitingView));
                     break;
                 case GameStatus.STARTED:
-                    App.Navigate(typeof(GameView));
+                    App.Navigate(typeof(MatchView));
                     break;
                 case GameStatus.ENDED:
                     App.Navigate(typeof(ScoreView));
