@@ -30,6 +30,8 @@ namespace YJMPD_UWP.Model
         private DataWriter dout;
         private StreamReader din;
 
+        private bool receivednull = false;
+
         private void UpdateNetworkStatus(NetworkStatus status)
         {
             Status = status;
@@ -116,10 +118,18 @@ namespace YJMPD_UWP.Model
 
                     if (data == null)
                     {
-                        Disconnect();
-                        running = false;
+                        if (receivednull)
+                        {
+                            Disconnect();
+                            running = false;
+                        }
+                        else
+                        {
+                            receivednull = true;
+                        }
                     }
                     else {
+                        receivednull = false;
                         HandleMessage(data);
                     }
                 }
