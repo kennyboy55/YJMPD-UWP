@@ -1,4 +1,6 @@
-﻿using Windows.Devices.Geolocation;
+﻿using System;
+using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -43,9 +45,16 @@ namespace YJMPD_UWP.Views
 
                 old = e.Position;
 
-                Map.TrySetViewAsync(e.Position.Coordinate.Point);
-                Map.TryZoomToAsync(13);
+                ZoomMap(e.Position.Coordinate.Point); 
             });
+        }
+
+        private async void ZoomMap(Geopoint p)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(200));
+            await Map.TrySetViewAsync(p);
+            await Task.Delay(TimeSpan.FromMilliseconds(500));
+            await Map.TryZoomToAsync(13);
         }
     }
 }
