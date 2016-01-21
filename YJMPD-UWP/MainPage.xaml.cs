@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using Windows.Devices.Geolocation;
 
 namespace YJMPD_UWP
 {
@@ -49,6 +50,10 @@ namespace YJMPD_UWP
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
         {
             if (e.Handled) return;
+
+            App.Game.MoveToStarted(new BasicGeoposition { Latitude = 44.768187, Longitude = -0.472412 });
+            e.Handled = true;
+            return;
 
             if (App.Game.Status == Model.GameHandler.GameStatus.STARTED)
             {

@@ -227,6 +227,8 @@ namespace YJMPD_UWP.Model
 
         public async void CalculateDistanceWalked()
         {
+            if (App.Geo.History.Count <= 1) return;
+
             MapRoute r = await Util.FindWalkingRoute(App.Geo.History.Select(p => p.Coordinate.Point).ToList());
             Settings.Statistics.Distance += r.LengthInMeters;
         }

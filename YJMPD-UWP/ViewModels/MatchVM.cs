@@ -1,16 +1,51 @@
-﻿using Windows.UI.Xaml.Media;
+﻿using System.Diagnostics;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using YJMPD_UWP.Helpers;
 
 namespace YJMPD_UWP.ViewModels
 {
     public class MatchVM : TemplateVM
     {
+        private int angle;
+
         public MatchVM() : base("Match")
         {
             Error = "";
             Message = "";
+            Degrees = 0;
+            angle = (int)Util.DegreeBearing(App.Geo.Position.Coordinate.Point.Position, App.Game.Destination);
+            HeadingVisible = false;
             App.Game.OnDestinationEnter += Game_OnDestinationEnter;
             App.Game.OnDestinationLeave += Game_OnDestinationLeave;
+            App.Geo.OnPositionUpdate += Geo_OnPositionUpdate;
+            App.Compass.OnHeadingUpdate += Compass_OnHeadingUpdate;
+        }
+
+        private void Compass_OnHeadingUpdate(object sender, Helpers.EventArgs.HeadingUpdatedEventArgs e)
+        {
+            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                Degrees = (int)(angle + -e.Heading.HeadingMagneticNorth);
+                NotifyPropertyChanged(nameof(Degrees));
+                Debug.WriteLine("Degrees " + Degrees + " / " + angle);
+            });
+        }
+
+        private void Geo_OnPositionUpdate(object sender, Helpers.EventArgs.PositionUpdatedEventArgs e)
+        {
+            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (App.Game.Status == Model.GameHandler.GameStatus.STARTED)
+                    return;
+
+                angle = (int)Util.DegreeBearing(e.Position.Coordinate.Point.Position, App.Game.Destination);
+                HeadingVisible = Util.Distance(e.Position.Coordinate.Point.Position, App.Game.Destination) > 500;
+
+                Debug.WriteLine(HeadingVisible);
+
+                NotifyPropertyChanged(nameof(HeadingVisible));
+            });
         }
 
         private void Game_OnDestinationLeave(object sender, System.EventArgs e)
@@ -40,6 +75,16 @@ namespace YJMPD_UWP.ViewModels
                 NotifyPropertyChanged(nameof(MessageVisible));
                 NotifyPropertyChanged(nameof(Message));
             });   
+        }
+
+        public int Degrees
+        {
+            get; private set;
+        }
+
+        public bool HeadingVisible
+        {
+            get; private set;
         }
 
         public bool MessageVisible

@@ -14,7 +14,11 @@
 
     <Grid Style="{StaticResource BaseGrid}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled">
-            <Image Name="Photo" Stretch="UniformToFill" Source="{Binding Photo}"/>
+            <Image Name="Photo" Stretch="UniformToFill" RenderTransformOrigin="0.5,0.5" Source="{Binding Photo}">
+                <Image.RenderTransform>
+                    <CompositeTransform Rotation="{Binding Degrees}"/>
+                </Image.RenderTransform>
+            </Image>
         </ScrollViewer>
 
         <StackPanel Visibility="{Binding MessageVisible, Converter={StaticResource BoolToVisConverter}}" Background="DarkGreen" Padding="20" VerticalAlignment="Bottom">

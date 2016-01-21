@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Data.Xml.Dom;
@@ -11,7 +12,7 @@ using Windows.UI.Popups;
 
 namespace YJMPD_UWP.Helpers
 {
-    class Util
+    public class Util
     {
         public enum DialogType { YESNO, OKCANCEL }
 
@@ -127,6 +128,41 @@ namespace YJMPD_UWP.Helpers
             Geopoint p = new Geopoint(new BasicGeoposition() { Latitude = latitude, Longitude = longitude });
             string address = await FindAddress(p);
             return address;
+        }
+
+        public static double Distance(BasicGeoposition pos1, BasicGeoposition pos2)
+        {
+            var R = 6371; // Radius of the earth in km
+            var dLat = toRadian((pos2.Latitude - pos1.Latitude));  // deg2rad below
+            var dLon = toRadian(pos2.Longitude - pos1.Longitude);
+            var a =
+              Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+              Math.Cos(toRadian(pos1.Latitude)) * Math.Cos(toRadian(pos2.Latitude)) *
+              Math.Sin(dLon / 2) * Math.Sin(dLon / 2)
+              ;
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            var d = R * c; // Distance in m
+            return d;
+        }
+
+        public static double DegreeBearing(BasicGeoposition pos1, BasicGeoposition pos2)
+        {
+            double lat1 = toRadian(pos1.Latitude);
+            double lat2 = toRadian(pos2.Latitude);
+            double dLon = toRadian(pos2.Longitude - pos2.Latitude);
+
+            double dPhi = Math.Log(Math.Tan(lat2 / 2 + Math.PI / 4) / Math.Tan(lat1 / 2 + Math.PI / 4));
+            if (Math.Abs(dLon) > Math.PI) dLon = (dLon > 0) ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);
+            double brng = Math.Atan2(dLon, dPhi);
+
+            Debug.WriteLine(brng);
+
+            return ((180.0 * brng / Math.PI) + 360) % 360;
+        }
+
+        private static double toRadian(double val)
+        {
+            return (Math.PI / 180) * val;
         }
 
         public static void ShowToastNotification(string title, string text)
