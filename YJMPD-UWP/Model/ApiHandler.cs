@@ -78,14 +78,13 @@ namespace YJMPD_UWP.Model
 
                     Util.ShowToastNotification(winner + " won!", "Press Ready or Leave");
 
-                    JArray players = (JArray)o["players"];
-
-                    foreach(JToken pl in players)
+                    foreach(var i in (JObject) o["players"])
                     {
-                        string username = pl["username"].ToString();
-                        double points = (double)pl["points"];
-                        double pointstotal = (double)pl["pointstotal"];
-
+                        Debug.WriteLine(i.Key);
+                        Debug.WriteLine(i.Value["points"]);
+                        string username = i.Key;
+                        double points = i.Value["points"].ToObject<Double>();
+                        double pointstotal = i.Value["pointstotal"].ToObject<Double>();
                         App.Game.UpdatePlayer(username, pointstotal, points);
                     }
 
