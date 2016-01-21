@@ -96,8 +96,11 @@ namespace YJMPD_UWP.Model
                     App.Game.StopMatch();
                     break;
                 case Command.StopGame:
-                    if(App.Game.Status != GameHandler.GameStatus.STOPPED)
+                    if (App.Game.Status != GameHandler.GameStatus.STOPPED)
+                    {
+                        Util.ShowToastNotification("Game stopped", "A player has left the game.");
                         App.Game.StopGame();
+                    }
                     break;
                 default:
                     //Do nothing

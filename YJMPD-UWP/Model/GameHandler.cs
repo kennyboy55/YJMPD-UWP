@@ -216,6 +216,8 @@ namespace YJMPD_UWP.Model
 
             Settings.Statistics.AddPoints(GetPlayer(Settings.Username).Points);
 
+            Settings.SaveStatistics();
+
             GeofenceMonitor.Current.Geofences.Clear();
             Selected = false;
             App.Photo.Reset();

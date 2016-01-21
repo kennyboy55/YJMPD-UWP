@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using Windows.Data.Xml.Dom;
 using Windows.Devices.Geolocation;
 using Windows.Services.Maps;
+using Windows.UI;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace YJMPD_UWP.Helpers
 {
@@ -128,6 +130,25 @@ namespace YJMPD_UWP.Helpers
             Geopoint p = new Geopoint(new BasicGeoposition() { Latitude = latitude, Longitude = longitude });
             string address = await FindAddress(p);
             return address;
+        }
+
+        public static MapPolyline GetRouteLine(BasicGeoposition p1, BasicGeoposition p2, Color color, int zindex, int thickness = 5)
+        {
+            var line = new MapPolyline
+            {
+                StrokeThickness = thickness,
+                StrokeColor = color,
+                StrokeDashed = false,
+                ZIndex = zindex
+            };
+
+            List<BasicGeoposition> plist = new List<BasicGeoposition>();
+            plist.Add(p1);
+            plist.Add(p2);
+
+            line.Path = new Geopath(plist);
+
+            return line;
         }
 
         public static double Distance(BasicGeoposition pos1, BasicGeoposition pos2)
