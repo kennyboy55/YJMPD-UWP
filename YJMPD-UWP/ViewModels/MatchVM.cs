@@ -31,7 +31,6 @@ namespace YJMPD_UWP.ViewModels
 
                 Degrees = (int)(angle + -e.Heading.HeadingMagneticNorth);
                 NotifyPropertyChanged(nameof(Degrees));
-                Debug.WriteLine(angle);
             });
         }
 
@@ -45,8 +44,6 @@ namespace YJMPD_UWP.ViewModels
                 angle = (int)Util.DegreeBearing(e.Position.Coordinate.Point.Position, App.Game.Destination);
                 double b = Util.Distance(e.Position.Coordinate.Point.Position, App.Game.Destination) * 1000;
                 HeadingVisible = (int)b > 250;
-
-                Debug.WriteLine(HeadingVisible + " " + b);
 
                 NotifyPropertyChanged(nameof(HeadingVisible));
                 NotifyPropertyChanged(nameof(InvHeadingVisible));

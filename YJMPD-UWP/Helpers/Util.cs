@@ -148,7 +148,6 @@ namespace YJMPD_UWP.Helpers
         public static double DegreeBearing(BasicGeoposition pos1, BasicGeoposition pos2)
         {
             var R = 6371000.0;
-            Debug.WriteLine(pos2.Latitude);
             var φ1 = toRadian(pos1.Latitude);
             var φ2 = toRadian(pos2.Latitude);
             var Δφ = toRadian(pos2.Latitude - pos1.Latitude);

@@ -51,10 +51,6 @@ namespace YJMPD_UWP
         {
             if (e.Handled) return;
 
-            App.Game.MoveToStarted(new BasicGeoposition { Latitude = 51.591403, Longitude = 40.743948 });
-            e.Handled = true;
-            return;
-
             if (App.Game.Status == Model.GameHandler.GameStatus.STARTED)
             {
                 e.Handled = true;
