@@ -26,9 +26,11 @@ namespace YJMPD_UWP.ViewModels
         {
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
+                if (App.Game.Status != Model.GameHandler.GameStatus.STARTED)
+                    return;
+
                 Degrees = (int)(angle + -e.Heading.HeadingMagneticNorth);
                 NotifyPropertyChanged(nameof(Degrees));
-                Debug.WriteLine("Degrees " + Degrees + " / " + angle);
             });
         }
 
@@ -36,15 +38,14 @@ namespace YJMPD_UWP.ViewModels
         {
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (App.Game.Status == Model.GameHandler.GameStatus.STARTED)
+                if (App.Game.Status != Model.GameHandler.GameStatus.STARTED)
                     return;
 
                 angle = (int)Util.DegreeBearing(e.Position.Coordinate.Point.Position, App.Game.Destination);
                 HeadingVisible = Util.Distance(e.Position.Coordinate.Point.Position, App.Game.Destination) > 500;
 
-                Debug.WriteLine(HeadingVisible);
-
                 NotifyPropertyChanged(nameof(HeadingVisible));
+                NotifyPropertyChanged(nameof(InvHeadingVisible));
             });
         }
 
@@ -85,6 +86,14 @@ namespace YJMPD_UWP.ViewModels
         public bool HeadingVisible
         {
             get; private set;
+        }
+
+        public bool InvHeadingVisible
+        {
+            get
+            {
+                return !HeadingVisible;
+            }
         }
 
         public bool MessageVisible
