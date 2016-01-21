@@ -27,7 +27,7 @@ namespace YJMPD_UWP.ViewModels
         {
             dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (e.Status == Model.PhotoHandler.PhotoStatus.NOPHOTO)
+                if (e.Status == Model.PhotoHandler.PhotoStatus.NOPHOTO && App.Game.Status == Model.GameHandler.GameStatus.WAITING)
                     timer.Start();
                 else
                 {

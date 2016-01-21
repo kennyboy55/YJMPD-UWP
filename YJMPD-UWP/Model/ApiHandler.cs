@@ -96,7 +96,8 @@ namespace YJMPD_UWP.Model
                     App.Game.StopMatch();
                     break;
                 case Command.StopGame:
-                    App.Game.StopGame();
+                    if(App.Game.Status != GameHandler.GameStatus.STOPPED)
+                        App.Game.StopGame();
                     break;
                 default:
                     //Do nothing
