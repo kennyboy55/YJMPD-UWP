@@ -25,12 +25,13 @@ namespace YJMPD_UWP.Model
 
         public PhotoHandler()
         {
+            Photo = "ms-appx:///Assets/Error.png";
             Status = PhotoStatus.NOPHOTO;
         }
 
         public void Reset()
         {
-            Photo = null;
+            Photo = "ms-appx:///Assets/Error.png";
             Status = PhotoStatus.NOPHOTO;
         }
 

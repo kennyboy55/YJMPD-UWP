@@ -85,8 +85,8 @@ namespace YJMPD_UWP.Model
                     geo = new Geolocator
                     {
                         DesiredAccuracy = PositionAccuracy.High,
-                        MovementThreshold = 3
-                        //ReportInterval = 1500
+                        //MovementThreshold = 3
+                        ReportInterval = 1500
                     };
 
                     ClearHistory();
@@ -131,8 +131,7 @@ namespace YJMPD_UWP.Model
 
         private void Geo_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
-
-           UpdatePosition(args.Position);
+            UpdatePosition(args.Position);
 
             if(trackhistory)
                 _history.Add(args.Position);

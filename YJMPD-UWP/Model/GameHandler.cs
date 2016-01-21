@@ -33,6 +33,7 @@ namespace YJMPD_UWP.Model
         public GameStatus Status { get; private set; }
 
         public List<Player> Players { get; private set; }
+        public BasicGeoposition Destination { get; private set; }
 
         public bool Selected { get; private set; }
 
@@ -73,6 +74,7 @@ namespace YJMPD_UWP.Model
             Players = new List<Player>();
             Status = GameStatus.STOPPED;
             Selected = false;
+            Destination = new BasicGeoposition() { Altitude = -1 };
             App.Photo.OnStatusUpdate += Photo_OnStatusUpdate;
             GeofenceMonitor.Current.GeofenceStateChanged += Current_GeofenceStateChanged;
         }
@@ -149,6 +151,8 @@ namespace YJMPD_UWP.Model
         {
             App.Navigate(typeof(MatchView));
 
+            Destination = bgps;
+
             GeofenceMonitor.Current.Geofences.Add(new Geofence("destination", new Geocircle(bgps, 50), MonitoredGeofenceStates.Entered | MonitoredGeofenceStates.Exited, false, TimeSpan.FromSeconds(1)));
 
             UpdateGameStatus(GameStatus.STARTED);
@@ -171,6 +175,7 @@ namespace YJMPD_UWP.Model
         {
             App.Photo.Reset();
             Selected = false;
+            Destination = new BasicGeoposition() { Altitude = -1 };
             Players.Clear();
             GeofenceMonitor.Current.Geofences.Clear();
             UpdateGamePlayers(null);
