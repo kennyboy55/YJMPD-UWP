@@ -28,11 +28,6 @@ namespace YJMPD_UWP.Views
             ReadyButton.IsEnabled = false;
 
             App.Api.Ready();
-
-            await Task.Delay(TimeSpan.FromMilliseconds(500));
-
-            App.Game.MoveToWaiting();
-            App.Navigate(typeof(WaitingView), "Waiting on other players...");
         }
     }
 }

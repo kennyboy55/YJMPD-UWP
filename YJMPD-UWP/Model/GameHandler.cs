@@ -218,6 +218,8 @@ namespace YJMPD_UWP.Model
 
             GeofenceMonitor.Current.Geofences.Clear();
             Selected = false;
+            App.Photo.Reset();
+            Destination = new BasicGeoposition() { Altitude = -1 };
 
             App.Navigate(typeof(ScoreView));
             UpdateGameStatus(GameStatus.ENDED);

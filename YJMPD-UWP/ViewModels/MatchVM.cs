@@ -29,7 +29,7 @@ namespace YJMPD_UWP.ViewModels
                 if (App.Game.Status != Model.GameHandler.GameStatus.STARTED)
                     return;
 
-                Degrees = (int)(angle + -e.Heading.HeadingMagneticNorth);
+                Degrees = (int)(angle + -e.Heading.HeadingTrueNorth);
                 NotifyPropertyChanged(nameof(Degrees));
             });
         }

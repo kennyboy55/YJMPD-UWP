@@ -31,7 +31,6 @@ namespace YJMPD_UWP.ViewModels
                     timer.Start();
                 else
                 {
-                    secondsleft = 60;
                     timer.Stop();
                 }
             });
@@ -40,6 +39,8 @@ namespace YJMPD_UWP.ViewModels
         private void Timer_Tick(object sender, object e)
         {
             NotifyPropertyChanged(nameof(TimeOut));
+
+            Debug.WriteLine("Testing");
 
             secondsleft--;
             if(secondsleft <= 0)
