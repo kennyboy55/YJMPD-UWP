@@ -26,7 +26,8 @@ namespace YJMPD_UWP.Model
             PictureUrl,
             DestinationReached,
             GameEnded,
-            PlayerReady
+            PlayerReady,
+            StopGame
         }
 
         public ApiHandler()
@@ -93,6 +94,9 @@ namespace YJMPD_UWP.Model
                     }
 
                     App.Game.StopMatch();
+                    break;
+                case Command.StopGame:
+                    App.Game.StopGame();
                     break;
                 default:
                     //Do nothing

@@ -19,6 +19,22 @@ namespace YJMPD_UWP.ViewModels
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
             timer.Start();
+
+            App.Photo.OnStatusUpdate += Photo_OnStatusUpdate;
+        }
+
+        private void Photo_OnStatusUpdate(object sender, Helpers.EventArgs.PhotoStatusUpdatedEventArgs e)
+        {
+            dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (e.Status == Model.PhotoHandler.PhotoStatus.NOPHOTO)
+                    timer.Start();
+                else
+                {
+                    secondsleft = 60;
+                    timer.Stop();
+                }
+            });
         }
 
         private void Timer_Tick(object sender, object e)
