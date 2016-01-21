@@ -40,6 +40,10 @@ namespace YJMPD_UWP.Model
 
             switch (c)
             {
+                case Command.Hi:
+                    Debug.WriteLine("Keep alive message received!");
+                    SendHi();
+                    break;
                 case Command.PlayerJoined:
                     Debug.WriteLine("Played joined");
                     PlayerJoined(o[Command.PlayerJoined.ToString()].ToString());
@@ -116,6 +120,12 @@ namespace YJMPD_UWP.Model
                 command = c.ToString(),
                 msg = msg
             });
+        }
+
+        public async Task SendHi()
+        {
+            JObject obj = JObject.FromObject(new { command = Command.Hi.ToString() });
+            await App.Network.Write(obj.ToString(Formatting.None));
         }
 
         //API stuff
