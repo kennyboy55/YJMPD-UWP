@@ -51,7 +51,7 @@ namespace YJMPD_UWP
         {
             if (e.Handled) return;
 
-            App.Game.MoveToStarted(new BasicGeoposition { Latitude = 51.591403, Longitude = 4.743948 });
+            App.Game.MoveToStarted(new BasicGeoposition { Latitude = 51.591403, Longitude = 40.743948 });
             e.Handled = true;
             return;
 
