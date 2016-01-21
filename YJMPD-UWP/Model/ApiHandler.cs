@@ -82,9 +82,9 @@ namespace YJMPD_UWP.Model
 
                     foreach(JToken pl in players)
                     {
-                        string username = o["username"].ToString();
-                        double points = (double)o["points"];
-                        double pointstotal = (double)o["pointstotal"];
+                        string username = pl["username"].ToString();
+                        double points = (double)pl["points"];
+                        double pointstotal = (double)pl["pointstotal"];
 
                         App.Game.UpdatePlayer(username, pointstotal, points);
                     }
