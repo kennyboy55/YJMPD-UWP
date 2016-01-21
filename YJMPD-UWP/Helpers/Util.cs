@@ -147,17 +147,20 @@ namespace YJMPD_UWP.Helpers
 
         public static double DegreeBearing(BasicGeoposition pos1, BasicGeoposition pos2)
         {
-            double lat1 = toRadian(pos1.Latitude);
-            double lat2 = toRadian(pos2.Latitude);
-            double dLon = toRadian(pos2.Longitude - pos2.Latitude);
+            var R = 6371000.0;
+            Debug.WriteLine(pos2.Latitude);
+            var φ1 = toRadian(pos1.Latitude);
+            var φ2 = toRadian(pos2.Latitude);
+            var Δφ = toRadian(pos2.Latitude - pos1.Latitude);
+            var Δλ = toRadian(pos2.Longitude - pos2.Longitude);
 
-            double dPhi = Math.Log(Math.Tan(lat2 / 2 + Math.PI / 4) / Math.Tan(lat1 / 2 + Math.PI / 4));
-            if (Math.Abs(dLon) > Math.PI) dLon = (dLon > 0) ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);
-            double brng = Math.Atan2(dLon, dPhi);
+            var a = Math.Sin(Δφ / 2.0) * Math.Sin(Δφ / 2.0) +
+                    Math.Cos(φ1) * Math.Cos(φ2) *
+                    Math.Sin(Δλ / 2.0)* Math.Sin(Δλ / 2.0);
+            var c = 2.0 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1.0 - a));
 
-            Debug.WriteLine(brng);
-
-            return ((180.0 * brng / Math.PI) + 360) % 360;
+            var d = R * c;
+            return d %360;
         }
 
         private static double toRadian(double val)
