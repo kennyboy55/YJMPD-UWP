@@ -28,6 +28,8 @@ namespace YJMPD_UWP.ViewModels
             secondsleft--;
             if(secondsleft <= 0)
             {
+                timer.Stop();
+                secondsleft = 60;
                 App.Game.StopGame();   
             }
         }
